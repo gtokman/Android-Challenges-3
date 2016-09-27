@@ -4,11 +4,18 @@ package com.garytokman.tokmangary_ce01.activities;
 // ListActivity
 
 import android.app.Fragment;
-import android.app.ListFragment;
+
+import com.garytokman.tokmangary_ce01.R;
+import com.garytokman.tokmangary_ce01.fragments.PersonListFragment;
 
 public class ListActivity extends GenericActivity {
     @Override
     public Fragment getFragment() {
-        return new ListFragment();
+        return new PersonListFragment();
+    }
+
+    @Override
+    protected int getMenu() {
+        return R.menu.list_menu;
     }
 }

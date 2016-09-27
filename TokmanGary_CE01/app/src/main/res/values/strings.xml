@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">TokmanGary_CE01</string>
+    <string name="add_person_menu">Add</string>
+    <string name="save_form_menu">Save</string>
+    <string name="delete_menu">Delete</string>
 </resources>

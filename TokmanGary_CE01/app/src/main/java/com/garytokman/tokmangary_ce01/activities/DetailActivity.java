@@ -5,11 +5,17 @@ package com.garytokman.tokmangary_ce01.activities;
 
 import android.app.Fragment;
 
+import com.garytokman.tokmangary_ce01.R;
 import com.garytokman.tokmangary_ce01.fragments.DetailFragment;
 
 public class DetailActivity extends GenericActivity {
     @Override
     public Fragment getFragment() {
         return new DetailFragment();
+    }
+
+    @Override
+    protected int getMenu() {
+        return R.menu.detail_menu;
     }
 }
