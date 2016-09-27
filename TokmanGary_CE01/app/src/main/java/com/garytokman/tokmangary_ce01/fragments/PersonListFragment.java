@@ -1,8 +1,13 @@
 package com.garytokman.tokmangary_ce01.fragments;
 
 import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.garytokman.tokmangary_ce01.activities.DetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,5 +29,16 @@ public class PersonListFragment extends ListFragment {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
         setListAdapter(adapter);
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        // Start detail activity
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        String name = l.getAdapter().getItem(position).toString();
+        intent.putExtra(Intent.EXTRA_TEXT, name);
+        intent.putExtra(Intent.EXTRA_PHONE_NUMBER, 22);
+        startActivity(intent);
     }
 }

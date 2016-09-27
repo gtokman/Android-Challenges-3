@@ -5,8 +5,9 @@ package com.garytokman.tokmangary_ce01.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 import com.garytokman.tokmangary_ce01.R;
 
 public abstract class GenericActivity extends AppCompatActivity {
+
+    private static final String FRAGMENT = "FRAGMENT";
 
     protected abstract Fragment getFragment();
     protected abstract int getMenu();
@@ -26,7 +29,7 @@ public abstract class GenericActivity extends AppCompatActivity {
         // Init layout with fragment
         FragmentManager manager = getFragmentManager();
         manager.beginTransaction()
-                .add(R.id.fragment_container, getFragment(), "FRAGMENT")
+                .add(R.id.fragment_container, getFragment(), FRAGMENT)
                 .addToBackStack(null)
                 .commit();
     }
@@ -48,12 +51,16 @@ public abstract class GenericActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_action:
                 message = "Add action";
+                // Start form activity
+                Intent intent = new Intent(this, FormActivity.class);
+                startActivity(intent);
                 break;
             case R.id.delete_action:
                 message = "Delete action";
                 break;
             case R.id.save_action:
                 message = "Save action";
+                finish();
                 break;
         }
 
