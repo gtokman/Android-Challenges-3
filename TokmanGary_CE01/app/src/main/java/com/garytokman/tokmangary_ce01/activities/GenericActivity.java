@@ -57,6 +57,7 @@ public abstract class GenericActivity extends AppCompatActivity {
                 break;
             case R.id.delete_action:
                 message = "Delete action";
+                finish();
                 break;
             case R.id.save_action:
                 message = "Save action";

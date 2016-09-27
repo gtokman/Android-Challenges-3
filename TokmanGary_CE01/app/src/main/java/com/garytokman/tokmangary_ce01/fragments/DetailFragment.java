@@ -22,16 +22,20 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.detail_layout, container, false);
 
+        // Get intent
         Intent intent = getActivity().getIntent();
-        String personName = intent.getStringExtra(Intent.EXTRA_TEXT);
-        int personAge = intent.getIntExtra(Intent.EXTRA_PHONE_NUMBER, 0);
+        String firstName = intent.getStringExtra(PersonListFragment.EXTRA_FIRST_NAME);
+        String lastName = intent.getStringExtra(PersonListFragment.EXTRA_LAST_NAME);
+        int personAge = intent.getIntExtra(PersonListFragment.EXTRA_AGE, 0);
 
         // Init
-        TextView fullName = (TextView) view.findViewById(R.id.full_name_view);
+        TextView firstNameView = (TextView) view.findViewById(R.id.first_name_view);
+        TextView lastNameView = (TextView) view.findViewById(R.id.last_name_view);
         TextView age = (TextView) view.findViewById(R.id.age_view);
 
         // Set
-        fullName.setText(personName);
+        firstNameView.setText(firstName);
+        lastNameView.setText(lastName);
         age.setText(String.valueOf(personAge));
 
         return view;

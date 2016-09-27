@@ -21,6 +21,11 @@
         <!--Detail Act-->
         <activity android:name=".activities.DetailActivity">
 
+            <intent-filter>
+                <action android:name="com.fullsail.android.ACTION_VIEW_DATA"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+
         </activity>
 
         <!--Form Act-->
