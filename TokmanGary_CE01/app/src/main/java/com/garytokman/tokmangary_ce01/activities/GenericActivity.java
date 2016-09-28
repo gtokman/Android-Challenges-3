@@ -17,6 +17,7 @@ import com.garytokman.tokmangary_ce01.R;
 public abstract class GenericActivity extends AppCompatActivity {
 
     private static final String FRAGMENT = "FRAGMENT";
+    protected static final String ACTION_UPDATE_LIST = "com.fullsail.android.ACTION_UPDATE_LIST";
 
     protected abstract Fragment getFragment();
     protected abstract int getMenu();

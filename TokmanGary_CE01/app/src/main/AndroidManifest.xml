@@ -32,6 +32,16 @@
         <activity android:name=".activities.FormActivity">
 
         </activity>
+
+        <!--Delete / Save receiver-->
+        <receiver android:name=".receiver.DataChangedReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.fullsail.android.ACTION_DELETE_DATA"/>
+                <action android:name="com.fullsail.android.ACTION_SAVE_DATA"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>
