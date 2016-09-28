@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.garytokman.tokmangary_ce01.R;
 import com.garytokman.tokmangary_ce01.fragments.FormFragment;
 
 public class FormActivity extends GenericActivity {
@@ -18,11 +17,6 @@ public class FormActivity extends GenericActivity {
     @Override
     public Fragment getFragment() {
         return new FormFragment();
-    }
-
-    @Override
-    protected int getMenu() {
-        return R.menu.form_menu;
     }
 
     @Override
@@ -37,7 +31,7 @@ public class FormActivity extends GenericActivity {
     protected void onPause() {
         super.onPause();
         // Unregister
-        unregisterReceiver(mFormReceiver);
+//        unregisterReceiver(mFormReceiver);
     }
 
     private BroadcastReceiver mFormReceiver = new BroadcastReceiver() {

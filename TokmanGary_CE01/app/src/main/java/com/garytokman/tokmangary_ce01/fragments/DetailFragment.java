@@ -4,18 +4,31 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.garytokman.tokmangary_ce01.R;
+import com.garytokman.tokmangary_ce01.activities.GenericActivity;
 
 // Gary Tokman
 // MDF3 - 1610
 // DetailFragment
 
 public class DetailFragment extends Fragment {
+
+    private static final String TAG = DetailFragment.class.getSimpleName();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -24,9 +37,9 @@ public class DetailFragment extends Fragment {
 
         // Get intent
         Intent intent = getActivity().getIntent();
-        String firstName = intent.getStringExtra(PersonListFragment.EXTRA_FIRST_NAME);
-        String lastName = intent.getStringExtra(PersonListFragment.EXTRA_LAST_NAME);
-        int personAge = intent.getIntExtra(PersonListFragment.EXTRA_AGE, 0);
+        String firstName = intent.getStringExtra(GenericActivity.EXTRA_FIRST_NAME);
+        String lastName = intent.getStringExtra(GenericActivity.EXTRA_LAST_NAME);
+        int personAge = intent.getIntExtra(GenericActivity.EXTRA_AGE, 0);
 
         // Init
         TextView firstNameView = (TextView) view.findViewById(R.id.first_name_view);
@@ -39,5 +52,22 @@ public class DetailFragment extends Fragment {
         age.setText(String.valueOf(personAge));
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.detail_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.delete_action) {
+            getActivity().finish();
+            Log.d(TAG, "Delete button hit ");
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

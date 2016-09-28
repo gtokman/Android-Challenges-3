@@ -10,18 +10,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.garytokman.tokmangary_ce01.R;
 import com.garytokman.tokmangary_ce01.fragments.DetailFragment;
 
 public class DetailActivity extends GenericActivity {
     @Override
     public Fragment getFragment() {
         return new DetailFragment();
-    }
-
-    @Override
-    protected int getMenu() {
-        return R.menu.detail_menu;
     }
 
     @Override
@@ -35,7 +29,7 @@ public class DetailActivity extends GenericActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mDetailReceiver);
+//        unregisterReceiver(mDetailReceiver);
     }
 
     private BroadcastReceiver mDetailReceiver = new BroadcastReceiver() {

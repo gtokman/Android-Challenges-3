@@ -7,19 +7,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.garytokman.tokmangary_ce01.activities.GenericActivity;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 // Gary Tokman
 // MDF3 - 1610
 // PersonListFragment
 
 public class PersonListFragment extends ListFragment {
-
-    private static final String ACTION_VIEW_DATA = "com.fullsail.android.ACTION_VIEW_DATA";
-    public static final String EXTRA_FIRST_NAME = "com.fullsail.android.EXTRA_FIRST_NAME";
-    public static final String EXTRA_LAST_NAME = "com.fullsail.android.EXTRA_LAST_NAME";
-    public static final String EXTRA_AGE = "com.fullsail.android.EXTRA_AGE";
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -38,10 +36,10 @@ public class PersonListFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         // Start detail activity
-        Intent intent = new Intent(ACTION_VIEW_DATA);
-        intent.putExtra(EXTRA_FIRST_NAME, "Gary");
-        intent.putExtra(EXTRA_LAST_NAME, "Tokman");
-        intent.putExtra(EXTRA_AGE, 22);
+        Intent intent = new Intent(GenericActivity.ACTION_VIEW_DATA);
+        intent.putExtra(GenericActivity.EXTRA_FIRST_NAME, "Gary");
+        intent.putExtra(GenericActivity.EXTRA_LAST_NAME, "Tokman");
+        intent.putExtra(GenericActivity.EXTRA_AGE, 22);
         startActivity(intent);
     }
 }
