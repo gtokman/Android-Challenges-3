@@ -8,10 +8,10 @@ import android.content.Context;
 import com.garytokman.tokmangary_ce01.datebase.PersonDatabase;
 
 public class Person {
-    private String mFirstName;
-    private String mLastName;
-    private int mAge;
-    private PersonDatabase mPersonDatabase;
+    private final String mFirstName;
+    private final String mLastName;
+    private final int mAge;
+    private final PersonDatabase mPersonDatabase;
 
     public Person(String firstName, String lastName, int age, Context context) {
         mFirstName = firstName;

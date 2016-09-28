@@ -3,6 +3,7 @@ package com.garytokman.tokmangary_ce01.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -22,9 +23,6 @@ public class DataChangedReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO: Save store that data out then send out broad
-        // TODO: delete records that match the passed in data all 3 points must match for th data to be gone send out broad
-        // TODO: After save / delete = send out an ACTION_UPDATE_LIST broadcast
         Log.i(TAG, "onReceive:  " + intent.getAction());
         switch (intent.getAction()) {
             case FormFragment.ACTION_SAVE:
@@ -38,12 +36,7 @@ public class DataChangedReceiver extends BroadcastReceiver {
     }
 
     private void deletePerson(Context context, Intent intent) {
-        Person person = new Person(
-                intent.getStringExtra(GenericActivity.EXTRA_FIRST_NAME),
-                intent.getStringExtra(GenericActivity.EXTRA_LAST_NAME),
-                intent.getIntExtra(GenericActivity.EXTRA_AGE, 0),
-                context
-        );
+        Person person = getPerson(context, intent);
 
         Log.d(TAG, "deletePerson: " + person.toString());
         // Delete
@@ -56,13 +49,18 @@ public class DataChangedReceiver extends BroadcastReceiver {
 
     }
 
+    @NonNull
+    private Person getPerson(Context context, Intent intent) {
+        return new Person(
+                    intent.getStringExtra(GenericActivity.EXTRA_FIRST_NAME),
+                    intent.getStringExtra(GenericActivity.EXTRA_LAST_NAME),
+                    intent.getIntExtra(GenericActivity.EXTRA_AGE, 0),
+                    context
+            );
+    }
+
     private void savePerson(Context context, Intent intent) {
-        Person person = new Person(
-                intent.getStringExtra(GenericActivity.EXTRA_FIRST_NAME),
-                intent.getStringExtra(GenericActivity.EXTRA_LAST_NAME),
-                intent.getIntExtra(GenericActivity.EXTRA_AGE, 0),
-                context
-        );
+        Person person = getPerson(context, intent);
 
         Log.d(TAG, "savePerson: "  + person.toString());
         // Save

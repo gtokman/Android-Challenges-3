@@ -34,10 +34,10 @@ public class FormActivity extends GenericActivity {
     protected void onPause() {
         super.onPause();
         // Unregister
-//        unregisterReceiver(mFormReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mFormReceiver);
     }
 
-    private BroadcastReceiver mFormReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mFormReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // When saved navigate to list and list refresh
@@ -45,6 +45,4 @@ public class FormActivity extends GenericActivity {
             finish();
         }
     };
-
-
 }

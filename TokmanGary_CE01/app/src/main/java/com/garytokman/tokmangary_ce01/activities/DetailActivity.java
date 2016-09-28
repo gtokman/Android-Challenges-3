@@ -32,10 +32,10 @@ public class DetailActivity extends GenericActivity {
     @Override
     protected void onPause() {
         super.onPause();
-//        unregisterReceiver(mDetailReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mDetailReceiver);
     }
 
-    private BroadcastReceiver mDetailReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mDetailReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Once delete navigate back to list and list update

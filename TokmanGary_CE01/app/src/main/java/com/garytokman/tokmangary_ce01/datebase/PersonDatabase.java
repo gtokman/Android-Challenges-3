@@ -20,7 +20,7 @@ public class PersonDatabase extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "ArticlesProvider.db";
     private static final String CREATE_TABLE = "create table if not exists " +
-            PersonTable.NAME + "(" +
+            DatabaseSchema.PersonTable.NAME + "(" +
             Columns.ID + " integer primary key autoincrement, " +
             Columns.FIRST_NAME + " text, " +
             Columns.LAST_NAME + " text, " +

@@ -11,6 +11,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
+import com.garytokman.tokmangary_ce01.R;
 import com.garytokman.tokmangary_ce01.activities.GenericActivity;
 import com.garytokman.tokmangary_ce01.datebase.DatabaseSchema.PersonTable.Columns;
 import com.garytokman.tokmangary_ce01.datebase.PersonDatabase;
@@ -34,9 +35,9 @@ public class PersonListFragment extends ListFragment {
         // Get saved people
         mPeople = PersonDatabase.getInstance(getActivity()).getPeople();
 
-        String[] from = {Columns.FIRST_NAME, Columns.LAST_NAME};
-        int[] to = {android.R.id.text1, android.R.id.text2};
-        mCursorAdapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_2, mPeople, from, to, 1);
+        String[] from = {Columns.FIRST_NAME, Columns.LAST_NAME, Columns.AGE};
+        int[] to = {R.id.list_first, R.id.list_last, R.id.list_age};
+        mCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, mPeople, from, to, 1);
         setListAdapter(mCursorAdapter);
     }
 

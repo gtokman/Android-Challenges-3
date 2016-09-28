@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,9 +22,7 @@ import com.garytokman.tokmangary_ce01.model.Person;
 
 public class DetailFragment extends Fragment {
 
-    private static final String TAG = DetailFragment.class.getSimpleName();
     public static final String ACTION_DELETE = "com.fullsail.android.ACTION_DELETE_DATA";
-
 
     private Person mPerson;
 
@@ -69,12 +66,12 @@ public class DetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.delete_action) {
+            // Send delete broadcast with person
             Intent intent = new Intent(ACTION_DELETE);
             intent.putExtra(GenericActivity.EXTRA_FIRST_NAME, mPerson.getFirstName());
             intent.putExtra(GenericActivity.EXTRA_LAST_NAME, mPerson.getLastName());
             intent.putExtra(GenericActivity.EXTRA_AGE, mPerson.getAge());
             getActivity().sendBroadcast(intent);
-            Log.d(TAG, "Delete button hit ");
             return true;
         } else {
             return super.onOptionsItemSelected(item);
