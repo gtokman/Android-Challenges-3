@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.garytokman.tokmangary_ce01.R;
 import com.garytokman.tokmangary_ce01.activities.GenericActivity;
+import com.garytokman.tokmangary_ce01.model.Person;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -23,6 +24,10 @@ import com.garytokman.tokmangary_ce01.activities.GenericActivity;
 public class DetailFragment extends Fragment {
 
     private static final String TAG = DetailFragment.class.getSimpleName();
+    public static final String ACTION_DELETE = "com.fullsail.android.ACTION_DELETE_DATA";
+
+
+    private Person mPerson;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class DetailFragment extends Fragment {
         String firstName = intent.getStringExtra(GenericActivity.EXTRA_FIRST_NAME);
         String lastName = intent.getStringExtra(GenericActivity.EXTRA_LAST_NAME);
         int personAge = intent.getIntExtra(GenericActivity.EXTRA_AGE, 0);
+        mPerson = new Person(firstName, lastName, personAge, getActivity());
 
         // Init
         TextView firstNameView = (TextView) view.findViewById(R.id.first_name_view);
@@ -47,9 +53,9 @@ public class DetailFragment extends Fragment {
         TextView age = (TextView) view.findViewById(R.id.age_view);
 
         // Set
-        firstNameView.setText(firstName);
-        lastNameView.setText(lastName);
-        age.setText(String.valueOf(personAge));
+        firstNameView.setText(mPerson.getFirstName());
+        lastNameView.setText(mPerson.getLastName());
+        age.setText(mPerson.getAgeToString());
 
         return view;
     }
@@ -63,7 +69,11 @@ public class DetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.delete_action) {
-            getActivity().finish();
+            Intent intent = new Intent(ACTION_DELETE);
+            intent.putExtra(GenericActivity.EXTRA_FIRST_NAME, mPerson.getFirstName());
+            intent.putExtra(GenericActivity.EXTRA_LAST_NAME, mPerson.getLastName());
+            intent.putExtra(GenericActivity.EXTRA_AGE, mPerson.getAge());
+            getActivity().sendBroadcast(intent);
             Log.d(TAG, "Delete button hit ");
             return true;
         } else {

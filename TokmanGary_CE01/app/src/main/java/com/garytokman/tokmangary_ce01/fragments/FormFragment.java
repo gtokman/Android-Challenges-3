@@ -1,6 +1,7 @@
 package com.garytokman.tokmangary_ce01.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.garytokman.tokmangary_ce01.R;
+import com.garytokman.tokmangary_ce01.activities.GenericActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +28,7 @@ import java.util.List;
 public class FormFragment extends Fragment {
 
     private static final String TAG = FormFragment.class.getSimpleName();
+    public static final String ACTION_SAVE = "com.fullsail.android.ACTION_SAVE_DATA";
     private EditText mFirstName;
     private EditText mLastName;
     private EditText mAge;
@@ -63,7 +66,15 @@ public class FormFragment extends Fragment {
         if (item.getItemId() == R.id.save_action) {
             Log.d(TAG, "save button pressed ");
             if (isTextValid(mEditTexts)) {
-                getActivity().finish();
+
+                // package up the first, last, and age
+                Intent intent = new Intent(ACTION_SAVE);
+                intent.putExtra(GenericActivity.EXTRA_FIRST_NAME, getText(mFirstName));
+                intent.putExtra(GenericActivity.EXTRA_LAST_NAME, getText(mLastName));
+                intent.putExtra(GenericActivity.EXTRA_AGE, Integer.parseInt(getText(mAge)));
+                getActivity().sendBroadcast(intent);
+
+
             } else {
                 Toast.makeText(getActivity(), "No empty text", Toast.LENGTH_SHORT).show();
             }
@@ -71,6 +82,10 @@ public class FormFragment extends Fragment {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private String getText(EditText editText) {
+        return editText.getText().toString();
     }
 
     private boolean isTextValid(List<EditText> fields) {

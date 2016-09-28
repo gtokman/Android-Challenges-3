@@ -13,7 +13,7 @@ import com.garytokman.tokmangary_ce01.R;
 public abstract class GenericActivity extends AppCompatActivity {
 
     private static final String FRAGMENT = "FRAGMENT";
-    protected static final String ACTION_UPDATE_LIST = "com.fullsail.android.ACTION_UPDATE_LIST";
+    public static final String ACTION_UPDATE_LIST = "com.fullsail.android.ACTION_UPDATE_LIST";
     public static final String ACTION_VIEW_DATA = "com.fullsail.android.ACTION_VIEW_DATA";
     public static final String EXTRA_FIRST_NAME = "com.fullsail.android.EXTRA_FIRST_NAME";
     public static final String EXTRA_LAST_NAME = "com.fullsail.android.EXTRA_LAST_NAME";

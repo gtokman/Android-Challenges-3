@@ -9,10 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.garytokman.tokmangary_ce01.fragments.FormFragment;
 
 public class FormActivity extends GenericActivity {
+
+    private static final String TAG = FormActivity.class.getSimpleName();
 
     @Override
     public Fragment getFragment() {
@@ -38,6 +41,8 @@ public class FormActivity extends GenericActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // When saved navigate to list and list refresh
+            Log.i(TAG, "onReceive: " + intent.getAction());
+            finish();
         }
     };
 

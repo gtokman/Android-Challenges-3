@@ -9,10 +9,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.garytokman.tokmangary_ce01.fragments.DetailFragment;
 
 public class DetailActivity extends GenericActivity {
+    private static final String TAG = DetailActivity.class.getSimpleName();
+
     @Override
     public Fragment getFragment() {
         return new DetailFragment();
@@ -36,6 +39,8 @@ public class DetailActivity extends GenericActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Once delete navigate back to list and list update
+            Log.i(TAG, "onReceive: " + intent.getAction());
+            finish();
         }
     };
 }
