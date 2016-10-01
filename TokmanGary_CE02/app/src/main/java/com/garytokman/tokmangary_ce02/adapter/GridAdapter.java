@@ -1,6 +1,9 @@
 package com.garytokman.tokmangary_ce02.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +63,7 @@ public class GridAdapter extends BaseAdapter {
         }
 
         // Update UI
-        viewHolder.bindView();
+        viewHolder.bindView(mContext);
 
         return view;
     }
@@ -73,9 +76,21 @@ public class GridAdapter extends BaseAdapter {
             mImageView = (ImageView) view.findViewById(R.id.gridImage);
         }
 
-        public void bindView() {
+        public void bindView(final Context context) {
             mImageView.setImageResource(R.mipmap.ic_launcher);
+            mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(GridAdapter.class.getSimpleName(), "onClick: ");
+                    // TODO: pass in image
+                    // Start intent
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.parse("android.resource://com.garytokman.tokmangary_ce02/mipmap/ic_launcher"), "image/*");
+                    context.startActivity(Intent.createChooser(intent, "View image"));
+                }
+            });
         }
+
     }
 
 }
