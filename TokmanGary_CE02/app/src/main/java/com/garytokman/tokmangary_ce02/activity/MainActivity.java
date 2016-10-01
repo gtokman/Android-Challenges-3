@@ -1,4 +1,4 @@
-package com.garytokman.tokmangary_ce02;
+package com.garytokman.tokmangary_ce02.activity;
 
 import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.garytokman.tokmangary_ce02.R;
 import com.garytokman.tokmangary_ce02.fragment.GridViewFragment;
 
 // Gary Tokman

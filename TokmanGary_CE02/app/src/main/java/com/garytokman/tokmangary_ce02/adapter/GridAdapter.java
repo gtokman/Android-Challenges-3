@@ -63,34 +63,33 @@ public class GridAdapter extends BaseAdapter {
         }
 
         // Update UI
-        viewHolder.bindView(mContext);
+        viewHolder.bindView();
 
         return view;
     }
 
-    private static class ViewHolder {
+    private static class ViewHolder implements View.OnClickListener {
 
         ImageView mImageView;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             mImageView = (ImageView) view.findViewById(R.id.gridImage);
+            mImageView.setOnClickListener(this);
         }
 
-        public void bindView(final Context context) {
+        void bindView() {
             mImageView.setImageResource(R.mipmap.ic_launcher);
-            mImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d(GridAdapter.class.getSimpleName(), "onClick: ");
-                    // TODO: pass in image
-                    // Start intent
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse("android.resource://com.garytokman.tokmangary_ce02/mipmap/ic_launcher"), "image/*");
-                    context.startActivity(Intent.createChooser(intent, "View image"));
-                }
-            });
         }
 
+        @Override
+        public void onClick(View view) {
+            Log.d(GridAdapter.class.getSimpleName(), "onClick: ");
+            // TODO: pass in image
+            // Start intent
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse(""), "image/png");
+//            view.getContext().startActivity(Intent.createChooser(intent, "View image"));
+        }
     }
 
 }
