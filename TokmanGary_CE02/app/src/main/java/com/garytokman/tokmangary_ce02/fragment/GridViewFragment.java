@@ -18,6 +18,7 @@ import com.garytokman.tokmangary_ce02.R;
 import com.garytokman.tokmangary_ce02.adapter.GridAdapter;
 import com.garytokman.tokmangary_ce02.service.ImageService;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,14 +28,32 @@ import java.util.List;
 
 public class GridViewFragment extends Fragment {
 
+    public final String[] IMAGES = {
+            "MgmzpOJ.jpg", "VZmFngH.jpg", "ptE5z9u.jpg",
+            "4QKO8Up.jpg", "Vm2UdDH.jpg", "C040ctB.jpg",
+            "MScR8za.jpg", "tM1bsAH.jpg", "fS1lKZx.jpg",
+            "h8e5rBX.jpg", "KBtUxzq.jpg", "wYXWJZz.jpg",
+            "LOUwRC4.jpg", "7ZSQfIu.jpg", "XLJiKqp.jpg",
+            "nXVLE9W.jpg", "HYQuj4b.jpg", "R8YIb8d.jpg",
+            "cLv3TVc.jpg", "f7pMMdA.jpg", "Dl1aIHV.jpg",
+            "UE3ng26.jpg", "1oyYfr0.jpg", "YSJ28fr.jpg",
+            "Ey39hl5.jpg", "HAnhjCI.jpg", "En3J4ZF.jpg",
+            "wr65Geg.jpg", "7D35kbV.jpg", "Z2WQBPI.jpg"
+    };
+
     public static final String ACTION_IMAGE_DOWNLOAD = "ACTION_IMAGE_DOWNLOAD";
     private static final String TAG = GridViewFragment.class.getSimpleName();
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "onReceive: " + intent.getAction());
+            mAdapter.notifyDataSetChanged();
+
+
         }
     };
+    private GridAdapter mAdapter;
+    private GridView mGridView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,17 +70,15 @@ public class GridViewFragment extends Fragment {
         // Inflate view
         View view = inflater.inflate(R.layout.grid_layout, container, false);
 
-        GridView gridView = (GridView) view.findViewById(R.id.gridView);
-
-        List<String> strings = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            strings.add("Gary");
-        }
-
-        GridAdapter adapter = new GridAdapter(getActivity(), strings);
-        gridView.setAdapter(adapter);
+        mGridView = (GridView) view.findViewById(R.id.gridView);
+        update();
 
         return view;
+    }
+
+    private void update() {
+        mAdapter = new GridAdapter(getActivity(), listOfImageFiles());
+        mGridView.setAdapter(mAdapter);
     }
 
     @Override
@@ -75,5 +92,16 @@ public class GridViewFragment extends Fragment {
     public void onStop() {
         super.onStop();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+    }
+
+    private List<File> listOfImageFiles() {
+
+        List<File> files = new ArrayList<>();
+
+        for (String imageName : IMAGES) {
+            files.add(new File(imageName));
+        }
+
+        return files;
     }
 }

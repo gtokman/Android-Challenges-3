@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager
                 .beginTransaction()
-                .add(R.id.container, new GridViewFragment(), GRID_VIEW_FRAGMENT)
+                .replace(R.id.container, new GridViewFragment(), GRID_VIEW_FRAGMENT)
                 .commit();
     }
 
