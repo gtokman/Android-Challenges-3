@@ -1,7 +1,6 @@
 package com.garytokman.tokmangary_ce02.service;
 
 import android.app.IntentService;
-import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -57,6 +56,8 @@ public class ImageService extends IntentService {
                 if (isNetworkOn()) {
                     byte[] downloadImage = downloadImage(image);
                     writeImageToFile(downloadImage, image);
+                    // update
+                    sendLocalBroadCast();
                 } else {
                     Toast.makeText(this, "Check network", Toast.LENGTH_SHORT).show();
                 }
@@ -85,10 +86,12 @@ public class ImageService extends IntentService {
 
         try {
             // Open stream and write locally
-            FileOutputStream fileOutputStream = openFileOutput(imageName, Context.MODE_PRIVATE);
+            File file = new File(getFilesDir(), imageName);
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
             fileOutputStream.write(image);
             fileOutputStream.close();
             Log.d(TAG, "writeImageToFile: " + imageName);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,8 +117,6 @@ public class ImageService extends IntentService {
             inputStream.close();
             httpURLConnection.disconnect();
 
-            // update
-            sendLocalBroadCast();
 
             return imageBytes;
         } catch (IOException e) {

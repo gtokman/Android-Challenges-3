@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static android.content.ContentValues.TAG;
+import static android.os.Build.VERSION.SDK_INT;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -88,24 +89,10 @@ public class GridAdapter extends BaseAdapter {
         }
 
         void bindView(String imageName, Context context) {
-//            mImageView.setImageBitmap(loadImageData(imageName, context));
             mContext = context;
             this.mImageName = imageName;
             ProcessImage processImage = new ProcessImage();
             processImage.execute();
-
-
-        }
-
-        private Bitmap loadImageData(String image, Context context) {
-            // Get file stream
-            File file = new File(context.getFilesDir(), image);
-
-            // Create options
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 6;
-
-            return BitmapFactory.decodeFile(file.getPath(), options);
         }
 
         class ProcessImage extends AsyncTask<Void, Void, Bitmap> {
@@ -134,20 +121,19 @@ public class GridAdapter extends BaseAdapter {
             }
         }
 
-
         @Override
         public void onClick(View view) {
-            Log.d(GridAdapter.class.getSimpleName(), "onClick: ");
             // TODO: pass in image
+            File file = new File(mContext.getFilesDir(), mImageName);
+            Log.d(GridAdapter.class.getSimpleName(), "onClick: " + file.getPath());
+
+            Uri data = SDK_INT >= Build.VERSION_CODES.M ? Uri.parse("content://" + file.getPath()) : Uri.fromFile(file);
+
             // Start intent
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            File file = new File(mContext.getFilesDir(), mImageName);
-
-            Log.d(TAG, "onClick: " + file.getPath());
-
-            intent.setDataAndType(Uri.parse("file://" + file.getAbsolutePath()), "image/*");
-
-            view.getContext().startActivity(intent);
+            intent.setDataAndType(data, "image/*");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
         }
     }
 }
