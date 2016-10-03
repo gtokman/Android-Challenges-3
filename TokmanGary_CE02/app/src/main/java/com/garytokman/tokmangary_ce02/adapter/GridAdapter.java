@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,11 +16,7 @@ import android.widget.ImageView;
 import com.garytokman.tokmangary_ce02.R;
 import com.garytokman.tokmangary_ce02.service.ImageService;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,8 +29,8 @@ import static android.content.ContentValues.TAG;
 
 public class GridAdapter extends BaseAdapter {
 
-    private Context mContext;
-    private List<String> mImageNames = new ArrayList<>(Arrays.asList(ImageService.IMAGES));
+    private final Context mContext;
+    private final List<String> mImageNames = new ArrayList<>(Arrays.asList(ImageService.IMAGES));
 
 
     public GridAdapter(Context context) {
@@ -64,7 +61,6 @@ public class GridAdapter extends BaseAdapter {
             // Inflate view
             view = LayoutInflater.from(mContext).inflate(R.layout.grid_item, viewGroup, false);
 
-            // Init view holder
             viewHolder = new ViewHolder(view);
 
             // Set tag
@@ -82,9 +78,9 @@ public class GridAdapter extends BaseAdapter {
 
     private static class ViewHolder implements View.OnClickListener {
 
-        ImageView mImageView;
+        final ImageView mImageView;
         Context mContext;
-        String imageName;
+        String mImageName;
 
         ViewHolder(View view) {
             mImageView = (ImageView) view.findViewById(R.id.gridImage);
@@ -92,32 +88,52 @@ public class GridAdapter extends BaseAdapter {
         }
 
         void bindView(String imageName, Context context) {
-            mImageView.setImageBitmap(loadImageData(imageName, context));
+//            mImageView.setImageBitmap(loadImageData(imageName, context));
             mContext = context;
-            this.imageName = imageName;
+            this.mImageName = imageName;
+            ProcessImage processImage = new ProcessImage();
+            processImage.execute();
+
+
         }
 
         private Bitmap loadImageData(String image, Context context) {
-            try {
-                // Get file
-                FileInputStream fileInputStream = context.openFileInput(image);
+            // Get file stream
+            File file = new File(context.getFilesDir(), image);
 
-                byte[] imageBytes = IOUtils.toByteArray(fileInputStream);
-                BitmapFactory.Options options = new BitmapFactory.Options();
+            // Create options
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 6;
 
-                options.inSampleSize = 5;
+            return BitmapFactory.decodeFile(file.getPath(), options);
+        }
 
-                Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
-//                // Convert to bitmap
-//                Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+        class ProcessImage extends AsyncTask<Void, Void, Bitmap> {
 
-                return bitmap;
-            } catch (IOException e) {
-                e.printStackTrace();
+            @Override
+            protected Bitmap doInBackground(Void... voids) {
+                return loadImageData(mImageName, mContext);
             }
 
-            return null;
+            private Bitmap loadImageData(String image, Context context) {
+                // Get file stream
+                File file = new File(context.getFilesDir(), image);
+
+                // Create options
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 6;
+
+                return BitmapFactory.decodeFile(file.getPath(), options);
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap bitmap) {
+                super.onPostExecute(bitmap);
+                mImageView.setImageBitmap(bitmap);
+                this.cancel(true);
+            }
         }
+
 
         @Override
         public void onClick(View view) {
@@ -125,12 +141,13 @@ public class GridAdapter extends BaseAdapter {
             // TODO: pass in image
             // Start intent
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            File file = new File(mContext.getFilesDir(), imageName);
-            Log.d(TAG, "onClick: " + file.getAbsolutePath());
-            intent.setDataAndType(Uri.parse(file.getAbsolutePath()), "image/jpg");
+            File file = new File(mContext.getFilesDir(), mImageName);
+
+            Log.d(TAG, "onClick: " + file.getPath());
+
+            intent.setDataAndType(Uri.parse("file://" + file.getAbsolutePath()), "image/*");
+
             view.getContext().startActivity(intent);
         }
-
     }
-
 }

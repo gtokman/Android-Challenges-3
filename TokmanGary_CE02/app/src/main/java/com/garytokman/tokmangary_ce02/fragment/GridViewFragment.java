@@ -1,14 +1,9 @@
 package com.garytokman.tokmangary_ce02.fragment;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +19,7 @@ import com.garytokman.tokmangary_ce02.service.ImageService;
 
 public class GridViewFragment extends Fragment {
 
-    public static final String ACTION_IMAGE_DOWNLOAD = "ACTION_IMAGE_DOWNLOAD";
-    private static final String TAG = GridViewFragment.class.getSimpleName();
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "onReceive: " + intent.getAction());
-            mAdapter.notifyDataSetChanged();
-        }
-    };
     private GridAdapter mAdapter;
-    private GridView mGridView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,23 +36,15 @@ public class GridViewFragment extends Fragment {
         // Inflate view
         View view = inflater.inflate(R.layout.grid_layout, container, false);
 
-        mGridView = (GridView) view.findViewById(R.id.gridView);
+        // Init
+        GridView gridView = (GridView) view.findViewById(R.id.gridView);
         mAdapter = new GridAdapter(getActivity());
-        mGridView.setAdapter(mAdapter);
+        gridView.setAdapter(mAdapter);
 
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        IntentFilter intentFilter = new IntentFilter(ACTION_IMAGE_DOWNLOAD);
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+    public void updateGridView() {
+        mAdapter.notifyDataSetChanged();
     }
 }

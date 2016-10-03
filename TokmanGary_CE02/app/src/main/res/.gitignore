@@ -21,8 +21,6 @@ hs_err_pid*
 *.dex
 
 # Java class files
-*.class
-
 # Generated files
 bin/
 gen/

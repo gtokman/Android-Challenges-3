@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TokmanGary_CE02</string>
+    <string name="check_network">Check your wifi!</string>
 </resources>

@@ -3,10 +3,13 @@ package com.garytokman.tokmangary_ce02.service;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.garytokman.tokmangary_ce02.fragment.GridViewFragment;
+import com.garytokman.tokmangary_ce02.activity.MainActivity;
 
 import org.apache.commons.io.IOUtils;
 
@@ -16,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -24,7 +28,6 @@ import java.net.URL;
 public class ImageService extends IntentService {
 
     private static final String TAG = ImageService.class.getSimpleName();
-    private final String URL_BASE = "http://i.imgur.com/";
     public static final String[] IMAGES = {
             "MgmzpOJ.jpg", "VZmFngH.jpg", "ptE5z9u.jpg",
             "4QKO8Up.jpg", "Vm2UdDH.jpg", "C040ctB.jpg",
@@ -46,30 +49,47 @@ public class ImageService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
+        // Check if the image exists else download and save
         for (String image : IMAGES) {
             if (imageExists(image)) {
                 sendLocalBroadCast();
             } else {
-                writeImageToFile(downloadImage(image), image);
+                if (isNetworkOn()) {
+                    byte[] downloadImage = downloadImage(image);
+                    writeImageToFile(downloadImage, image);
+                } else {
+                    Toast.makeText(this, "Check network", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
 
+
+    private boolean isNetworkOn() {
+        // Get network info
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
     private boolean imageExists(String imageName) {
         File file = new File(this.getFilesDir(), imageName);
-        Log.d(TAG, "imageExists() returned: " + file.exists());
+
+        Log.d(TAG, "imageExists: " + file.exists());
+
         return file.exists();
     }
 
     private void writeImageToFile(byte[] image, String imageName) {
 
         try {
+            // Open stream and write locally
             FileOutputStream fileOutputStream = openFileOutput(imageName, Context.MODE_PRIVATE);
             fileOutputStream.write(image);
             fileOutputStream.close();
             Log.d(TAG, "writeImageToFile: " + imageName);
-            // update
-            sendLocalBroadCast();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,42 +97,36 @@ public class ImageService extends IntentService {
 
     private byte[] downloadImage(String image) {
 
-        // HTTP
-        HttpURLConnection httpURLConnection = null;
+        HttpURLConnection httpURLConnection;
 
         try {
-            // Create url
+            // Download image
+            String URL_BASE = "http://i.imgur.com/";
             URL url = new URL(URL_BASE + image);
 
-            // Open connection
             httpURLConnection = (HttpURLConnection) url.openConnection();
-
-            // Connect
             httpURLConnection.connect();
 
-            // Read
             InputStream inputStream = httpURLConnection.getInputStream();
-
+            // Convert to bytes
             byte[] imageBytes = IOUtils.toByteArray(inputStream);
-            Log.d(TAG, "downloadImage() returned: " + imageBytes);
+            Log.d(TAG, "downloadImage() returned: " + Arrays.toString(imageBytes));
             inputStream.close();
+            httpURLConnection.disconnect();
 
+            // update
+            sendLocalBroadCast();
 
             return imageBytes;
-
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (httpURLConnection != null) {
-                httpURLConnection.disconnect();
-            }
         }
 
         return new byte[0];
     }
 
     private void sendLocalBroadCast() {
-        Intent intent = new Intent(GridViewFragment.ACTION_IMAGE_DOWNLOAD);
+        Intent intent = new Intent(MainActivity.ACTION_IMAGE_DOWNLOAD);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
