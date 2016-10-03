@@ -1,8 +1,8 @@
 package com.garytokman.tokmangary_ce02.activity;
 
 import android.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String GRID_VIEW_FRAGMENT = "GRID_VIEW_FRAGMENT";
     private static final String TAG = MainActivity.class.getSimpleName();
+    private GridViewFragment mGridViewFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +29,10 @@ public class MainActivity extends AppCompatActivity {
     private void addFragment() {
         // Add fragment
         FragmentManager fragmentManager = getFragmentManager();
+        mGridViewFragment = new GridViewFragment();
         fragmentManager
                 .beginTransaction()
-                .replace(R.id.container, new GridViewFragment(), GRID_VIEW_FRAGMENT)
+                .replace(R.id.container, mGridViewFragment, GRID_VIEW_FRAGMENT)
                 .commit();
     }
 

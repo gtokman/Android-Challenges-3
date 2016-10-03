@@ -25,7 +25,7 @@ public class ImageService extends IntentService {
 
     private static final String TAG = ImageService.class.getSimpleName();
     private final String URL_BASE = "http://i.imgur.com/";
-    public final String[] IMAGES = {
+    public static final String[] IMAGES = {
             "MgmzpOJ.jpg", "VZmFngH.jpg", "ptE5z9u.jpg",
             "4QKO8Up.jpg", "Vm2UdDH.jpg", "C040ctB.jpg",
             "MScR8za.jpg", "tM1bsAH.jpg", "fS1lKZx.jpg",
@@ -40,6 +40,7 @@ public class ImageService extends IntentService {
 
     public ImageService() {
         super(ImageService.class.getSimpleName());
+        setIntentRedelivery(true);
     }
 
     @Override
@@ -52,13 +53,6 @@ public class ImageService extends IntentService {
                 writeImageToFile(downloadImage(image), image);
             }
         }
-
-                /*
-Check if a local copy of the image already exists.
-If the image already exists, send a broadcast to update the UI and move on to the next image.
-If the image doesn't exist, download the image and save it according to the Storage section of the instructions, then send a broadcast to update the UI.
-*/
-
     }
 
     private boolean imageExists(String imageName) {
@@ -76,19 +70,16 @@ If the image doesn't exist, download the image and save it according to the Stor
             Log.d(TAG, "writeImageToFile: " + imageName);
             // update
             sendLocalBroadCast();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     private byte[] downloadImage(String image) {
 
         // HTTP
-        HttpURLConnection httpURLConnection;
+        HttpURLConnection httpURLConnection = null;
 
-        // URL
         try {
             // Create url
             URL url = new URL(URL_BASE + image);
@@ -104,11 +95,17 @@ If the image doesn't exist, download the image and save it according to the Stor
 
             byte[] imageBytes = IOUtils.toByteArray(inputStream);
             Log.d(TAG, "downloadImage() returned: " + imageBytes);
+            inputStream.close();
+
 
             return imageBytes;
 
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (httpURLConnection != null) {
+                httpURLConnection.disconnect();
+            }
         }
 
         return new byte[0];
