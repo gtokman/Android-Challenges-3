@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TokmanGary_CE03</string>
+    <string name="empty_list_text">No saved articles...</string>
+    <string name="chooser_text">Choose a browser</string>
 </resources>
