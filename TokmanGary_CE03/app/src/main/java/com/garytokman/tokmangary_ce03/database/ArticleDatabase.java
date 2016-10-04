@@ -2,9 +2,11 @@ package com.garytokman.tokmangary_ce03.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.garytokman.tokmangary_ce03.database.DatabaseSchema.PersonTable;
 import com.garytokman.tokmangary_ce03.database.DatabaseSchema.PersonTable.Columns;
 import com.garytokman.tokmangary_ce03.model.Article;
 
@@ -30,7 +32,7 @@ public class ArticleDatabase extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    private static ArticleDatabase newInstance(Context context) {
+    public static ArticleDatabase newInstance(Context context) {
         if (sArticleDatabase == null) {
             sArticleDatabase = new ArticleDatabase(context);
         }
@@ -48,8 +50,12 @@ public class ArticleDatabase extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getArticle() {
+        return getReadableDatabase().query(PersonTable.NAME, null, null, null, null, null, null);
+    }
+
     public void saveArticle(Article article) {
-        getWritableDatabase().insert(DatabaseSchema.PersonTable.NAME, null, getValues(article));
+        getWritableDatabase().insert(PersonTable.NAME, null, getValues(article));
     }
 
     private ContentValues getValues(Article article) {

@@ -11,8 +11,8 @@ url	(string) - The direct URL to the content page of the article.
 urlToImage	(string) - The URL to a relevant image for the article.
 */
 
+import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Article {
 
@@ -22,13 +22,14 @@ public class Article {
     private String mUrl;
     private String mUrlToImage;
 
-    public Article(JSONObject jsonObject) {
+    public Article(JSONArray jsonArray) {
         try {
-            mAuthor = jsonObject.getString("author");
-            mDescription = jsonObject.getString("description");
-            mTitle = jsonObject.getString("title");
-            mUrl = jsonObject.getString("url");
-            mUrlToImage = jsonObject.getString("urlToImage");
+            int index = (int) Math.round(Math.random() * 9);
+            mAuthor = jsonArray.getJSONObject(index).getString("author");
+            mDescription = jsonArray.getJSONObject(index).getString("description");
+            mTitle = jsonArray.getJSONObject(index).getString("title");
+            mUrl = jsonArray.getJSONObject(index).getString("url");
+            mUrlToImage = jsonArray.getJSONObject(index).getString("urlToImage");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -52,5 +53,10 @@ public class Article {
 
     public String getUrlToImage() {
         return mUrlToImage;
+    }
+
+    @Override
+    public String toString() {
+        return mAuthor + " " + mTitle + " " + mDescription + " " + mUrl + " " + mUrlToImage;
     }
 }

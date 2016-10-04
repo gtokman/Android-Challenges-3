@@ -2,12 +2,16 @@ package com.garytokman.tokmangary_ce03.fragments;
 
 import android.app.ListFragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import com.garytokman.tokmangary_ce03.R;
+import com.garytokman.tokmangary_ce03.database.ArticleDatabase;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -15,11 +19,7 @@ import com.garytokman.tokmangary_ce03.R;
 
 public class NewsListFragment extends ListFragment {
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
+    private CursorAdapter mCursorAdapter;
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -28,6 +28,21 @@ public class NewsListFragment extends ListFragment {
         // Init
         setListShown(true);
         setEmptyText(getString(R.string.empty_list_text));
+
+        // Article
+        Cursor article = ArticleDatabase.newInstance(getActivity()).getArticle();
+
+        // Set adapter
+        String[] from = {};
+        int[] to = {};
+        mCursorAdapter = new SimpleCursorAdapter(getActivity(), R.layout.list_item, article, from, to, 1);
+        setListAdapter(mCursorAdapter);
+    }
+
+    public void updateList() {
+        Cursor article = ArticleDatabase.newInstance(getActivity()).getArticle();
+        mCursorAdapter.changeCursor(article);
+        mCursorAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -38,7 +53,5 @@ public class NewsListFragment extends ListFragment {
         Uri webPage = Uri.parse("");
         Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
         startActivity(Intent.createChooser(intent, getString(R.string.chooser_text)));
-
-
     }
 }
