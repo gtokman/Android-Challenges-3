@@ -21,10 +21,18 @@
 
 
         <!--Save broadcast-->
-        <receiver android:name=".SaveArticleBroadcast"/>
+        <receiver android:name=".receiver.SaveArticleBroadcast"
+            android:exported="true">
+
+            <intent-filter>
+                <action android:name="com.tokmangary_ceo3.action.SAVE_BROADCAST"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+
+        </receiver>
 
         <!--News service-->
-        <service android:name=".service.NewsIntentService"/>
+        <service android:name=".service.ArticleIntentService"/>
 
     </application>
 

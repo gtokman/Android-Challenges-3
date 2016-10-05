@@ -11,10 +11,13 @@ url	(string) - The direct URL to the content page of the article.
 urlToImage	(string) - The URL to a relevant image for the article.
 */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
-public class Article {
+public class Article implements Parcelable {
 
     private String mAuthor;
     private String mDescription;
@@ -33,6 +36,15 @@ public class Article {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private Article(Parcel in) {
+        mAuthor = in.readString();
+        mTitle = in.readString();
+        mDescription = in.readString();
+        mUrl = in.readString();
+        mUrlToImage = in.readString();
+
     }
 
     public String getAuthor() {
@@ -59,4 +71,35 @@ public class Article {
     public String toString() {
         return mAuthor + " " + mTitle + " " + mDescription + " " + mUrl + " " + mUrlToImage;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mAuthor);
+        parcel.writeString(mTitle);
+        parcel.writeString(mDescription);
+        parcel.writeString(mUrl);
+        parcel.writeString(mUrlToImage);
+    }
+
+    public static final Creator<Article> CREATOR = new ClassLoaderCreator<Article>() {
+        @Override
+        public Article createFromParcel(Parcel parcel, ClassLoader classLoader) {
+            return new Article(parcel);
+        }
+
+        @Override
+        public Article createFromParcel(Parcel parcel) {
+            return new Article(parcel);
+        }
+
+        @Override
+        public Article[] newArray(int i) {
+            return new Article[i];
+        }
+    };
 }

@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat.BigTextStyle;
 import android.support.v7.app.NotificationCompat;
@@ -12,6 +13,7 @@ import android.util.Log;
 
 import com.garytokman.tokmangary_ce03.R;
 import com.garytokman.tokmangary_ce03.model.Article;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -25,17 +27,18 @@ import java.net.URL;
 
 // Gary Tokman
 // MDF3 - 1610
-// NewsIntentService
+// ArticleIntentService
 
-public class NewsIntentService extends IntentService {
+public class ArticleIntentService extends IntentService {
 
 
     private static final String NEWS_URL = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=top&apiKey=6bac43a15cfd4f309f73ec5874562c76";
-    private static final String TAG = NewsIntentService.class.getSimpleName();
-    private static final String SAVE_BROADCAST = "SAVE_BROADCAST";
+    private static final String TAG = ArticleIntentService.class.getSimpleName();
+    public static final String SAVE_BROADCAST = "com.tokmangary_ceo3.action.SAVE_BROADCAST";
+    public static final String NEWS_ARTICLE = "NEWS_ARTICLE";
 
-    public NewsIntentService() {
-        super(NewsIntentService.class.getSimpleName());
+    public ArticleIntentService() {
+        super(ArticleIntentService.class.getSimpleName());
     }
 
     @Override
@@ -93,11 +96,18 @@ public class NewsIntentService extends IntentService {
 
         // Create
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        Bitmap icon = null;
+        try {
+            icon = Picasso.with(this).load(article.getUrlToImage()).get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         builder
                 .setContentTitle(article.getTitle())
+                .setLargeIcon(icon)
                 .setContentText(article.getDescription())
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .addAction(R.drawable.ic_cloud_save, "Save", getSaveIntent())
+                .addAction(R.drawable.ic_cloud_save, "Save", getSaveIntent(article))
                 .setAutoCancel(true)
                 .setContentIntent(openWebPage(article.getUrl()));
 
@@ -105,15 +115,15 @@ public class NewsIntentService extends IntentService {
         BigTextStyle bigTextStyle = new BigTextStyle();
         bigTextStyle
                 .setBigContentTitle(article.getTitle())
-                .setSummaryText(article.getAuthor())
                 .bigText(article.getDescription());
         builder.setStyle(bigTextStyle);
 
         return builder.build();
     }
 
-    private PendingIntent getSaveIntent() {
+    private PendingIntent getSaveIntent(Article article) {
         Intent intent = new Intent(SAVE_BROADCAST);
+        intent.putExtra(NEWS_ARTICLE, article);
 
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
