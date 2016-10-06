@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.garytokman.tokmangary_ce03.R;
 import com.garytokman.tokmangary_ce03.fragments.NewsListFragment;
-import com.garytokman.tokmangary_ce03.receiver.SaveArticleBroadcast;
+import com.garytokman.tokmangary_ce03.receiver.SaveArticleBroadcastReceiver;
 import com.garytokman.tokmangary_ce03.service.ArticleIntentService;
 
 // Gary Tokman
@@ -22,9 +22,8 @@ import com.garytokman.tokmangary_ce03.service.ArticleIntentService;
 public class MainActivity extends AppCompatActivity {
 
     private static final String NEWS_FRAGMENT = "NEWS_FRAGMENT";
-    private static final String TAG = MainActivity.class.getSimpleName();
     private NewsListFragment mNewsListFragment;
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             // Update list
@@ -41,10 +40,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ArticleIntentService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent, 0);
 
-        // TODO: Start Alarm to run every 60 seconds, alarm should trigger a service PendingIntent to start the service
+        // Create alarm man
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60 * 1000, pendingIntent);
-
 
         // Add fragment
         mNewsListFragment = new NewsListFragment();
@@ -57,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        IntentFilter filter = new IntentFilter(SaveArticleBroadcast.UPDATE_LIST);
+        IntentFilter filter = new IntentFilter(SaveArticleBroadcastReceiver.UPDATE_LIST);
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, filter);
     }
 

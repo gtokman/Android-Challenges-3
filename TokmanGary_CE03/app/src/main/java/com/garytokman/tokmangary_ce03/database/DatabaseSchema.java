@@ -1,16 +1,7 @@
 package com.garytokman.tokmangary_ce03.database;
 // Gary Tokman
 // MDF3 - 1610
-// TokmanGary_CE03
-
-
-/*
-author	(string) - The author of the article.
-description	(string) - A description or preface for the article.
-title	(string) - The headline or title of the article.
-url	(string) - The direct URL to the content page of the article.
-urlToImage	(string) - The URL to a relevant image for the article.
-*/
+// DatabaseSchema
 
 public class DatabaseSchema {
 

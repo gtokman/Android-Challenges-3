@@ -47,14 +47,21 @@ public class NewsListFragment extends ListFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        updateList();
+    }
+
+    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
         // Get cursor
         Cursor cursor = (Cursor) l.getAdapter().getItem(position);
 
-        // TODO: Load in web view
-        Uri webPage = Uri.parse(cursor.getString(cursor.getColumnIndex(Columns.URL)));
+        // Open web page
+        String link = cursor.getString(cursor.getColumnIndex(Columns.URL));
+        Uri webPage = Uri.parse(link);
         Intent intent = new Intent(Intent.ACTION_VIEW, webPage);
         startActivity(Intent.createChooser(intent, getString(R.string.chooser_text)));
     }

@@ -32,7 +32,8 @@ import java.net.URL;
 public class ArticleIntentService extends IntentService {
 
 
-    private static final String NEWS_URL = "https://newsapi.org/v1/articles?source=techcrunch&sortBy=top&apiKey=6bac43a15cfd4f309f73ec5874562c76";
+    private static final String NEWS_URL = "https://newsapi.org/v1/articles?";
+    private static final String PARAMS = "source=techcrunch&sortBy=top&apiKey=6bac43a15cfd4f309f73ec5874562c76";
     private static final String TAG = ArticleIntentService.class.getSimpleName();
     public static final String SAVE_BROADCAST = "com.tokmangary_ceo3.action.SAVE_BROADCAST";
     public static final String NEWS_ARTICLE = "NEWS_ARTICLE";
@@ -60,7 +61,7 @@ public class ArticleIntentService extends IntentService {
 
         try {
             // Connect
-            URL url = new URL(NEWS_URL);
+            URL url = new URL(NEWS_URL + PARAMS);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.connect();
 
@@ -130,7 +131,10 @@ public class ArticleIntentService extends IntentService {
 
 
     private PendingIntent openWebPage(String link) {
+        Log.d(TAG, "openWebPage: "  + link);
+
         Uri uri = Uri.parse(link);
+
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 
         return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
