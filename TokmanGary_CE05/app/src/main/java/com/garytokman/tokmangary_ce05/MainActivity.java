@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     private static final String FRAGMENT = "MediaPlayerFragment";
     private MediaPlayerService mMediaPlayerService;
+    private MediaPlayerFragment mMediaPlayerFragment;
     private boolean mBound;
 
     @Override
@@ -21,9 +22,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mMediaPlayerFragment = new MediaPlayerFragment();
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.container, new MediaPlayerFragment(), FRAGMENT)
+                .add(R.id.container, mMediaPlayerFragment, FRAGMENT)
                 .commit();
     }
 
@@ -68,10 +70,21 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     @Override
     public void onPauseSelected() {
         mMediaPlayerService.pause();
+
     }
 
     @Override
     public void onStopSelected() {
         mMediaPlayerService.stop();
+    }
+
+    @Override
+    public void onSkipBackSelected() {
+
+    }
+
+    @Override
+    public void onSkipForwardSelected() {
+
     }
 }

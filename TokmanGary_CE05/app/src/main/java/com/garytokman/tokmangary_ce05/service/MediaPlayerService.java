@@ -15,7 +15,7 @@ import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.ID
 import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.PAUSE;
 import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.PLAY;
 import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.PREPARED;
-import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.PREPARING;
+import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.STOP;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -32,11 +32,11 @@ import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.PR
        *  that you cannot call start() again until you prepare the MediaPlayer again.
        *  */
 
-public class MediaPlayerService extends Service implements MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
+public class MediaPlayerService extends Service implements MediaPlayer.OnCompletionListener {
 
 
     enum STATE {
-        PLAY, PAUSE, STOP, PREPARING, PREPARED, IDLE, COMPLETE
+        PLAY, PAUSE, STOP, PREPARED, IDLE, COMPLETE
     }
 
     public static final String TAG = MediaPlayerService.class.getSimpleName();
@@ -105,16 +105,15 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     public void stop() {
         if (mSTATE == PLAY || mSTATE == PAUSE || mSTATE == COMPLETE) {
             mPlayer.stop();
-            mSTATE = PREPARING;
+            mSTATE = STOP;
             prepareMediaPlayer();
         }
     }
 
     private void prepareMediaPlayer() {
-        if (mSTATE == IDLE || mSTATE == PREPARING) {
-            mPlayer = MediaPlayer.create(this, R.raw.music);
+        if (mSTATE == IDLE || mSTATE == STOP) {
+            mPlayer = MediaPlayer.create(this, R.raw.disclosure);
             mPlayer.setOnCompletionListener(this);
-            mPlayer.setOnPreparedListener(this);
             mSTATE = PREPARED;
         }
     }
@@ -122,10 +121,5 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnPrepare
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         mSTATE = COMPLETE;
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mediaPlayer) {
-        mSTATE = PREPARED;
     }
 }

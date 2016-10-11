@@ -4,10 +4,13 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.garytokman.tokmangary_ce05.R;
 
@@ -18,6 +21,9 @@ import com.garytokman.tokmangary_ce05.R;
 public class MediaPlayerFragment extends Fragment implements View.OnClickListener {
 
     public static final String TAG = MediaPlayerFragment.class.getSimpleName();
+    private ImageView mAlbumArt;
+    private TextView mSongInfo;
+    private SeekBar mSeekBar;
 
     public interface OnMediaControlSelected {
         void onPlaySelected();
@@ -25,6 +31,10 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
         void onPauseSelected();
 
         void onStopSelected();
+
+        void onSkipBackSelected();
+
+        void onSkipForwardSelected();
     }
 
     private OnMediaControlSelected mSelected;
@@ -43,7 +53,7 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.media_player_layout, container, false);
+        return  inflater.inflate(R.layout.media_player_layout, container, false);
     }
 
     @Override
@@ -53,26 +63,44 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
         View view = getView();
 
         // Init
-        Button play = (Button) view.findViewById(R.id.playButton);
-        Button pause = (Button) view.findViewById(R.id.pauseButton);
-        Button stop = (Button) view.findViewById(R.id.stopButton);
-        play.setOnClickListener(this);
-        pause.setOnClickListener(this);
-        stop.setOnClickListener(this);
+        view.findViewById(R.id.play).setOnClickListener(this);
+        view.findViewById(R.id.pause).setOnClickListener(this);
+        view.findViewById(R.id.stop).setOnClickListener(this);
+        view.findViewById(R.id.skipForward).setOnClickListener(this);
+        view.findViewById(R.id.skipBack).setOnClickListener(this);
+        mSeekBar = (SeekBar) view.findViewById(R.id.seekBar);
+        mSeekBar.setMax(100);
+        mSongInfo = (TextView) view.findViewById(R.id.songTitle);
+        mAlbumArt = (ImageView) view.findViewById(R.id.albumArt);
     }
 
+    public void updateSongDetails(int resource, String songInfo) {
+        mAlbumArt.setImageResource(resource);
+        mSongInfo.setText(songInfo);
+    }
+
+    public void setSeekBarProgress(int progress) {
+        Log.d(TAG, "setSeekBarProgress: ");
+        mSeekBar.setProgress(progress);
+    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.playButton:
+            case R.id.play:
                 mSelected.onPlaySelected();
                 break;
-            case R.id.pauseButton:
+            case R.id.pause:
                 mSelected.onPauseSelected();
                 break;
-            case R.id.stopButton:
+            case R.id.stop:
                 mSelected.onStopSelected();
+                break;
+            case R.id.skipBack:
+                mSelected.onSkipBackSelected();
+                break;
+            case R.id.skipForward:
+                mSelected.onSkipForwardSelected();
                 break;
         }
     }
