@@ -8,7 +8,10 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.garytokman.tokmangary_ce05.R;
+import com.garytokman.tokmangary_ce05.model.Song;
+import com.garytokman.tokmangary_ce05.model.Songs;
+
+import java.util.List;
 
 import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.COMPLETE;
 import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.IDLE;
@@ -34,14 +37,15 @@ import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.ST
 
 public class MediaPlayerService extends Service implements MediaPlayer.OnCompletionListener {
 
-
     enum STATE {
         PLAY, PAUSE, STOP, PREPARED, IDLE, COMPLETE
     }
 
-    public static final String TAG = MediaPlayerService.class.getSimpleName();
+    public static final List<Song> sSongs = Songs.getSongs();
+    private static final String TAG = MediaPlayerService.class.getSimpleName();
     private MediaPlayer mPlayer;
-    private STATE mSTATE = IDLE;
+    private STATE mSTATE;
+    private Song mSong;
 
 
     public class MediaPlayerBinder extends Binder {
@@ -54,7 +58,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate: ");
-        prepareMediaPlayer();
+        mSTATE = IDLE;
+        mSong = sSongs.get(0);
+        prepareMediaPlayer(mSong.getSongId());
     }
 
     @Override
@@ -92,6 +98,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mSTATE == PREPARED || mSTATE == PAUSE || mSTATE == COMPLETE) {
             mPlayer.start();
             mSTATE = PLAY;
+        } else {
+            prepareMediaPlayer(mSong.getSongId());
+            play(); // Recursive call to play once prepared
         }
     }
 
@@ -106,16 +115,41 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mSTATE == PLAY || mSTATE == PAUSE || mSTATE == COMPLETE) {
             mPlayer.stop();
             mSTATE = STOP;
-            prepareMediaPlayer();
         }
     }
 
-    private void prepareMediaPlayer() {
+    private void prepareMediaPlayer(int songId) {
         if (mSTATE == IDLE || mSTATE == STOP) {
-            mPlayer = MediaPlayer.create(this, R.raw.disclosure);
+            mPlayer = MediaPlayer.create(this, songId);
             mPlayer.setOnCompletionListener(this);
             mSTATE = PREPARED;
         }
+    }
+
+    public void playNext(int index) {
+        stop();
+        mSong = sSongs.get(index);
+        play();
+    }
+
+    public void playPrevious(int index) {
+        stop();
+        mSong = sSongs.get(index);
+        play();
+    }
+
+    public void seekTo(int place) {
+        if (mSTATE == PLAY || mSTATE == PAUSE) {
+            mPlayer.seekTo(place);
+        }
+    }
+
+    public int getDuration() {
+        return mPlayer.getDuration(); // milliseconds
+    }
+
+    public int getCurrentPosition() {
+        return mPlayer.getCurrentPosition(); // milliseconds
     }
 
     @Override

@@ -10,15 +10,11 @@ public class Song {
     private int mSongId;
     private int mImageId;
 
-    public Song(String name, String artist, int songId, int imageId) {
+    public Song(String name, String artist, int imageId, int songId) {
         mTrackName = name;
         mArtist = artist;
-        mSongId = songId;
         mImageId = imageId;
-    }
-
-    public String getTrackName() {
-        return mTrackName;
+        mSongId = songId;
     }
 
     public int getSongId() {
@@ -35,6 +31,7 @@ public class Song {
 
     @Override
     public String toString() {
-        return mArtist + " " + mTrackName;
+        return mTrackName + " - " + mArtist;
     }
+
 }

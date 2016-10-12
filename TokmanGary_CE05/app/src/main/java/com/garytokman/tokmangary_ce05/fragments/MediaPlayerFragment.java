@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +12,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.garytokman.tokmangary_ce05.R;
+import com.garytokman.tokmangary_ce05.model.Song;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -74,14 +74,14 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
         mAlbumArt = (ImageView) view.findViewById(R.id.albumArt);
     }
 
-    public void updateSongDetails(int resource, String songInfo) {
-        mAlbumArt.setImageResource(resource);
-        mSongInfo.setText(songInfo);
+    public void setSongInfo(Song song) {
+        mAlbumArt.setImageResource(song.getImageId());
+        mSongInfo.setText(song.toString());
     }
 
-    public void setSeekBarProgress(int progress) {
-        Log.d(TAG, "setSeekBarProgress: ");
-        mSeekBar.setProgress(progress);
+    public void setSeekBarProgress(int duration, int progress) {
+        mSeekBar.setMax(duration * 1000);
+        mSeekBar.setProgress(progress * 1000);
     }
 
     @Override

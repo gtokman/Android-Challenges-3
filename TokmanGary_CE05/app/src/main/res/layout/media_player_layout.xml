@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        app:srcCompat="@drawable/album3"
+        app:srcCompat="@drawable/album1"
         android:id="@+id/albumArt"
         android:scaleType="center"
         android:layout_weight="1"
