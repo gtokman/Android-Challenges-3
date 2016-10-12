@@ -1,12 +1,17 @@
 package com.garytokman.tokmangary_ce05.activity;
 
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.garytokman.tokmangary_ce05.R;
@@ -27,6 +32,13 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private Handler mHandler;
     private boolean mBound;
     private int mSongIndex = 0;
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int index = intent.getIntExtra(MediaPlayerService.EXTRA_INDEX, 0);
+            mMediaPlayerFragment.setSongInfo(sSongs.get(index));
+        }
+    };
 
 
     @Override
@@ -51,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         // Bind to service
         Intent intent = new Intent(this, MediaPlayerService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
+
+        IntentFilter filter = new IntentFilter(MediaPlayerService.ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, filter);
     }
 
     @Override
@@ -58,9 +73,11 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         super.onStop();
         if (mBound) {
             mBound = false;
+            mHandler = null;
             mMediaPlayerService = null;
             unbindService(this);
         }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -79,8 +96,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     @Override
     public void onPlaySelected() {
-        mMediaPlayerService.play();
-        updateSeekBar();
+       if (!mMediaPlayerService.isPlaying()) {
+           mMediaPlayerService.play();
+           updateSeekBar();
+       } else Toast.makeText(this, "Already playing", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -110,18 +129,33 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         } else Toast.makeText(this, "At end of list", Toast.LENGTH_SHORT).show();
     }
 
-    private void updateSeekBar() {
-       runOnUiThread(runnable);
+    @Override
+    public void onSeekBarChanged(int change) {
+        mMediaPlayerService.seekTo(change);
     }
 
-   private Runnable runnable = new Runnable() {
-        @Override
-        public void run() {
-            if (mMediaPlayerService != null) {
-                mMediaPlayerFragment.setSeekBarProgress(mMediaPlayerService.getDuration(),
-                        mMediaPlayerService.getCurrentPosition());
-                mHandler.postDelayed(this, 15);
+    @Override
+    public void onLoopSelected(boolean isLooping) {
+        Log.d(TAG, "onLoopSelected: " + isLooping);
+        mMediaPlayerService.setLoop(isLooping);
+    }
+
+    @Override
+    public void onShuffleSelected(boolean isShuffled) {
+        mMediaPlayerService.setShuffle(isShuffled);
+    }
+
+    public void updateSeekBar() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mMediaPlayerService != null) {
+                    mMediaPlayerFragment.setSeekBarProgress(mMediaPlayerService.getDuration(),
+                            mMediaPlayerService.getCurrentPosition());
+                    mHandler.postDelayed(this, 15);
+                }
             }
-        }
-    };
+        });
+    }
+
 }

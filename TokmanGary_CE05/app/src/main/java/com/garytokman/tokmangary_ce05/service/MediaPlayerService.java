@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.garytokman.tokmangary_ce05.model.Song;
@@ -35,23 +36,36 @@ import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.ST
        *  that you cannot call start() again until you prepare the MediaPlayer again.
        *  */
 
-public class MediaPlayerService extends Service implements MediaPlayer.OnCompletionListener {
+public class MediaPlayerService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnSeekCompleteListener {
+
+
 
     enum STATE {
         PLAY, PAUSE, STOP, PREPARED, IDLE, COMPLETE
     }
 
+    public static final String EXTRA_INDEX = "random";
+    public static final String ACTION = "com.tokmangary_ce0.ACTION.SendShuffle";
     public static final List<Song> sSongs = Songs.getSongs();
     private static final String TAG = MediaPlayerService.class.getSimpleName();
     private MediaPlayer mPlayer;
+    private boolean mLoop = false;
+    private boolean mShuffle = false;
     private STATE mSTATE;
     private Song mSong;
-
 
     public class MediaPlayerBinder extends Binder {
         public MediaPlayerService getService() {
             return MediaPlayerService.this;
         }
+    }
+
+    public void setLoop(boolean loop) {
+        mLoop = loop;
+    }
+
+    public void setShuffle(boolean shuffle) {
+        mShuffle = shuffle;
     }
 
     @Override
@@ -104,6 +118,10 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         }
     }
 
+    public boolean isPlaying() {
+        return mPlayer.isPlaying();
+    }
+
     public void pause() {
         if (mSTATE == PLAY) {
             mPlayer.pause();
@@ -122,6 +140,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mSTATE == IDLE || mSTATE == STOP) {
             mPlayer = MediaPlayer.create(this, songId);
             mPlayer.setOnCompletionListener(this);
+            mPlayer.setOnSeekCompleteListener(this);
             mSTATE = PREPARED;
         }
     }
@@ -140,7 +159,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 
     public void seekTo(int place) {
         if (mSTATE == PLAY || mSTATE == PAUSE) {
-            mPlayer.seekTo(place);
+            mPlayer.seekTo(getCurrentPosition() + place);
         }
     }
 
@@ -155,5 +174,27 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         mSTATE = COMPLETE;
+            Log.d(TAG, "onCompletion: " + mLoop + " shuffle " + mShuffle);
+        if (mLoop) {
+            play();
+        } else if (mShuffle) {
+            int random = (int) Math.round(Math.random() * sSongs.size() - 1);
+            updateUI(random);
+            mSong = sSongs.get(random);
+            mSTATE = IDLE;
+            play();
+        }
+    }
+
+    @Override
+    public void onSeekComplete(MediaPlayer mediaPlayer) {
+
+    }
+
+
+    private void updateUI(int index) {
+        Intent intent = new Intent(ACTION);
+        intent.putExtra(EXTRA_INDEX, index);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
