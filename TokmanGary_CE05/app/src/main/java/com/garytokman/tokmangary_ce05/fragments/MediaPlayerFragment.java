@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.garytokman.tokmangary_ce05.R;
 import com.garytokman.tokmangary_ce05.model.Song;
+import com.garytokman.tokmangary_ce05.service.MediaPlayerService;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -22,7 +23,6 @@ import com.garytokman.tokmangary_ce05.model.Song;
 
 public class MediaPlayerFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener {
 
-    public static final String TAG = MediaPlayerFragment.class.getSimpleName();
     private ImageView mAlbumArt;
     private TextView mSongInfo;
     private SeekBar mSeekBar;
@@ -86,7 +86,8 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
         mAlbumArt = (ImageView) view.findViewById(R.id.albumArt);
     }
 
-    public void setSongInfo(Song song) {
+    public void setSongInfo(int index) {
+        Song song = MediaPlayerService.sSongs.get(index);
         mAlbumArt.setImageResource(song.getImageId());
         mSongInfo.setText(song.toString());
     }
