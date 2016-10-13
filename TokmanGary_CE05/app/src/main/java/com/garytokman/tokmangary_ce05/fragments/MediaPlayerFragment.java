@@ -26,6 +26,8 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
     private ImageView mAlbumArt;
     private TextView mSongInfo;
     private SeekBar mSeekBar;
+    private CheckBox mLoop;
+    private CheckBox mShuffle;
 
     public interface OnMediaControlSelected {
         void onPlaySelected();
@@ -76,10 +78,10 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
         view.findViewById(R.id.stop).setOnClickListener(this);
         view.findViewById(R.id.skipForward).setOnClickListener(this);
         view.findViewById(R.id.skipBack).setOnClickListener(this);
-        CheckBox loop = (CheckBox) view.findViewById(R.id.loop);
-        CheckBox shuffle = (CheckBox) view.findViewById(R.id.shuffle);
-        loop.setOnCheckedChangeListener(this);
-        shuffle.setOnCheckedChangeListener(this);
+        mLoop = (CheckBox) view.findViewById(R.id.loop);
+        mShuffle = (CheckBox) view.findViewById(R.id.shuffle);
+        mLoop.setOnCheckedChangeListener(this);
+        mShuffle.setOnCheckedChangeListener(this);
         mSeekBar = (SeekBar) view.findViewById(R.id.seekBar);
         mSeekBar.setOnSeekBarChangeListener(this);
         mSongInfo = (TextView) view.findViewById(R.id.songTitle);
@@ -143,5 +145,13 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
         } else {
             mSelected.onShuffleSelected(isChanged);
         }
+    }
+
+    public void setLooping(boolean isLooping) {
+        mLoop.setChecked(isLooping);
+    }
+
+    public void setShuffle(boolean isShuffle) {
+        mShuffle.setChecked(isShuffle);
     }
 }

@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.Handler;
@@ -34,17 +35,6 @@ import static com.garytokman.tokmangary_ce05.service.MediaPlayerService.STATE.ST
 // Gary Tokman
 // MDF3 - 1610
 // MediaPlayerService
-
-/*
-*  For example, when you create a new MediaPlayer, it is in the Idle state. At that point,
- *  you should initialize it by calling setDataSource(), bringing it to the Initialized state.
-  *  After that, you have to prepare it using either the prepare() or prepareAsync() method.
-   *  When the MediaPlayer is done preparing, it will then enter the Prepared state, which means
-    *  you can call start() to make it play the media. At that point, as the diagram illustrates,
-     *  you can move between the Started, Paused and PlaybackCompleted states by calling such methods
-      *  as start(), pause(), and seekTo(), amongst others. When you call stop(), however, notice
-       *  that you cannot call start() again until you prepare the MediaPlayer again.
-       *  */
 
 public class MediaPlayerService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
@@ -93,7 +83,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "onCreate: ");
+        Log.d(TAG, "onCreate: ===========================");
 
         // Init
         mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -101,7 +91,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 
         // Prepare player
         mSTATE = IDLE;
-        mSong = sSongs.get(0);
+        mSong = sSongs.get(mSongIndex);
         prepareMediaPlayer();
     }
 
@@ -182,7 +172,6 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mSTATE == IDLE || mSTATE == STOP) {
             mPlayer = MediaPlayer.create(this, mSong.getSongId());
             mPlayer.setOnCompletionListener(this);
-            prepareNewNotification();
             mSTATE = PREPARED;
         }
     }
@@ -193,6 +182,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             sendUpdateBroadcast(mSongIndex);
             stop();
             play();
+            prepareNewNotification();
         } else Toast.makeText(this, "End of list", Toast.LENGTH_SHORT).show();
     }
 
@@ -202,11 +192,20 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             sendUpdateBroadcast(mSongIndex);
             stop();
             play();
+            prepareNewNotification();
         } else Toast.makeText(this, "Beginning of list", Toast.LENGTH_SHORT).show();
     }
 
-    public void isLooping(boolean loop) {
+    public void setLooping(boolean loop) {
         mPlayer.setLooping(loop);
+    }
+
+    public boolean isLooping() {
+        return mPlayer.isLooping();
+    }
+
+    public boolean isShuffle() {
+        return mShuffle;
     }
 
     public void seekTo(int place) {
@@ -260,7 +259,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
 
     private PendingIntent getIntent() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("position", mPlayer.getCurrentPosition());
+        intent.putExtra(Intent.EXTRA_TEXT, mSongIndex);
         return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -270,7 +269,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         notificationBuilder
                 .setAutoCancel(false)
                 .setContentTitle(getString(R.string.app_name))
-//                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), mSong.getImageId()))
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), mSong.getImageId()))
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentText(mSong.toString())
                 .setContentIntent(getIntent())
@@ -286,12 +285,14 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     private PendingIntent getPreviousIntent() {
-        Intent intent = new Intent("");
+        Intent intent = new Intent(ACTION);
+        intent.putExtra(EXTRA_INDEX, --mSongIndex);
         return PendingIntent.getBroadcast(this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent getNextIntent() {
-        Intent intent = new Intent("");
+        Intent intent = new Intent(ACTION);
+        intent.putExtra(EXTRA_INDEX, ++mSongIndex);
         return PendingIntent.getBroadcast(this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

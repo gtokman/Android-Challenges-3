@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     private static final String FRAGMENT = "MediaPlayerFragment";
     private static final String TAG = MainActivity.class.getSimpleName();
+
     private MediaPlayerService mMediaPlayerService;
     public MediaPlayerFragment mMediaPlayerFragment;
     private boolean mBound;
@@ -43,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
                     .beginTransaction()
                     .add(R.id.container, mMediaPlayerFragment, FRAGMENT)
                     .commit();
+        } else {
+            mMediaPlayerFragment = (MediaPlayerFragment) getFragmentManager().findFragmentByTag(FRAGMENT);
+            if (mMediaPlayerFragment == null) Log.d(TAG, "onCreate: null");
+            else Log.d(TAG, "onCreate: not null");
         }
     }
 
@@ -73,11 +78,20 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
         mBound = true;
+        Log.d(TAG, "onServiceConnected: " + mBound);
 
         // Init service
         MediaPlayerService.MediaPlayerBinder localBinder = (MediaPlayerService.MediaPlayerBinder) iBinder;
         mMediaPlayerService = localBinder.getService();
         mMediaPlayerService.setActivity(this);
+
+        // When starting activity with pending intent check for current song index
+        // After service binds with started foreground service
+        // Update UI with current song
+        if (getIntent().hasExtra(Intent.EXTRA_TEXT)) {
+            mMediaPlayerFragment.setSongInfo(getIntent().getExtras().getInt(Intent.EXTRA_TEXT));
+        }
+
     }
 
     @Override
@@ -87,52 +101,50 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     @Override
     public void onPlaySelected() {
-        mMediaPlayerService.play();
-
-        // Foreground
-        Intent intent = new Intent(this, MediaPlayerService.class);
-        startService(intent);
+        if (mBound) {
+            mMediaPlayerService.play();
+            // Foreground
+            Intent intent = new Intent(this, MediaPlayerService.class);
+            startService(intent);
+        }
     }
 
     @Override
     public void onPauseSelected() {
-        mMediaPlayerService.pause();
+        if (mBound) mMediaPlayerService.pause();
     }
 
     @Override
     public void onStopSelected() {
-        mMediaPlayerService.stop();
+        if (mBound) mMediaPlayerService.stop();
     }
 
     @Override
     public void onSkipBackSelected() {
-        mMediaPlayerService.playPrevious();
+        if (mBound) mMediaPlayerService.playPrevious();
     }
-
 
     @Override
     public void onSkipForwardSelected() {
-        mMediaPlayerService.playNext();
+        if (mBound) mMediaPlayerService.playNext();
     }
 
     @Override
     public void onSeekBarChanged(final int change) {
-        mMediaPlayerService.seekTo(change);
+        if (mBound) mMediaPlayerService.seekTo(change);
     }
 
     @Override
     public void onLoopSelected(boolean isLooping) {
-        Log.d(TAG, "onLoopSelected: " + isLooping);
-        mMediaPlayerService.isLooping(isLooping);
+        if (mBound) mMediaPlayerService.setLooping(isLooping);
     }
 
     @Override
     public void onShuffleSelected(boolean isShuffled) {
-        mMediaPlayerService.setShuffle(isShuffled);
+        if (mBound) mMediaPlayerService.setShuffle(isShuffled);
     }
 
     public void updateSeekBar(int duration, int position) {
         mMediaPlayerFragment.setSeekBarProgress(duration, position);
     }
-
 }
