@@ -27,8 +27,10 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private static final String FRAGMENT = "MediaPlayerFragment";
     private static final List<Song> sSongs = Songs.getSongs();
     private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String EXTRA_INDEX = "EXTRA_INDEX";
+    private static final String EXTRA_POSITION = "EXTRA_POSITION";
     private MediaPlayerService mMediaPlayerService;
-    private MediaPlayerFragment mMediaPlayerFragment;
+    public MediaPlayerFragment mMediaPlayerFragment;
     private Handler mHandler;
     private boolean mBound;
     private int mSongIndex = 0;
@@ -46,13 +48,22 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (getIntent().getExtras() != null) {
+            int position = getIntent().getExtras().getInt("position");
+            Log.d(TAG, "onCreate: " + position);
+        }
+
+        // Init
         mHandler = new Handler();
 
-        mMediaPlayerFragment = new MediaPlayerFragment();
-        getFragmentManager()
-                .beginTransaction()
-                .add(R.id.container, mMediaPlayerFragment, FRAGMENT)
-                .commit();
+        if (savedInstanceState == null) {
+
+            mMediaPlayerFragment = new MediaPlayerFragment();
+            getFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, mMediaPlayerFragment, FRAGMENT)
+                    .commit();
+        }
     }
 
     @Override
@@ -73,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         super.onStop();
         if (mBound) {
             mBound = false;
-            mHandler = null;
             mMediaPlayerService = null;
             unbindService(this);
         }
@@ -87,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         // Init service
         MediaPlayerService.MediaPlayerBinder localBinder = (MediaPlayerService.MediaPlayerBinder) iBinder;
         mMediaPlayerService = localBinder.getService();
+        mMediaPlayerService.setActivity(this);
     }
 
     @Override
@@ -96,10 +107,11 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
 
     @Override
     public void onPlaySelected() {
-       if (!mMediaPlayerService.isPlaying()) {
-           mMediaPlayerService.play();
-           updateSeekBar();
-       } else Toast.makeText(this, "Already playing", Toast.LENGTH_SHORT).show();
+        mMediaPlayerService.play();
+
+        // Foreground
+        Intent intent = new Intent(this, MediaPlayerService.class);
+        startService(intent);
     }
 
     @Override
@@ -130,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     }
 
     @Override
-    public void onSeekBarChanged(int change) {
+    public void onSeekBarChanged(final int change) {
         mMediaPlayerService.seekTo(change);
     }
 
@@ -145,17 +157,20 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         mMediaPlayerService.setShuffle(isShuffled);
     }
 
-    public void updateSeekBar() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mMediaPlayerService != null) {
-                    mMediaPlayerFragment.setSeekBarProgress(mMediaPlayerService.getDuration(),
-                            mMediaPlayerService.getCurrentPosition());
-                    mHandler.postDelayed(this, 15);
-                }
-            }
-        });
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save instance
+        outState.putInt(EXTRA_INDEX, mSongIndex);
+        if (mMediaPlayerService.isPlaying()) {
+            outState.putInt(EXTRA_POSITION, mMediaPlayerService.getCurrentPosition());
+        }
+
+    }
+
+    public void updateSeekBar(int duration, int position) {
+        mMediaPlayerFragment.setSeekBarProgress(duration, position);
     }
 
 }

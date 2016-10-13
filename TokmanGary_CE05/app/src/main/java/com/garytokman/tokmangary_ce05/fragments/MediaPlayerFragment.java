@@ -92,8 +92,8 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
     }
 
     public void setSeekBarProgress(int duration, int progress) {
-        mSeekBar.setMax(duration * 1000);
-        mSeekBar.setProgress(progress * 1000);
+        mSeekBar.setMax(duration);
+        mSeekBar.setProgress(progress);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
     @Override
     public void onProgressChanged(SeekBar seekBar, int change, boolean userChanged) {
         if (userChanged) {
-            mSelected.onSeekBarChanged(change * 1000);
+            mSelected.onSeekBarChanged(change);
         }
     }
 
