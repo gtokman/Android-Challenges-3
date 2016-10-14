@@ -1,7 +1,6 @@
 package com.garytokman.tokmangary_ce05.service;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import com.garytokman.tokmangary_ce05.R;
 import com.garytokman.tokmangary_ce05.activity.MainActivity;
 import com.garytokman.tokmangary_ce05.model.Song;
 import com.garytokman.tokmangary_ce05.model.Songs;
+import com.garytokman.tokmangary_ce05.receiver.PlaybackReceiver;
 
 import java.util.List;
 
@@ -47,14 +47,12 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         PLAY, PAUSE, STOP, PREPARED, IDLE, COMPLETE
     }
 
-    public static final String EXTRA_INDEX = "random";
+    public static final String EXTRA_INDEX = "EXTRA_INDEX";
     public static final String ACTION = "com.tokmangary_ce0.ACTION.SendShuffle";
     public static final List<Song> sSongs = Songs.getSongs();
     private static final String TAG = MediaPlayerService.class.getSimpleName();
 
     private MediaPlayer mPlayer;
-    private NotificationManager mNotificationManager;
-    private Notification mNotification;
     private Handler mHandler;
     private MainActivity mActivity;
     private boolean mShuffle = false;
@@ -83,10 +81,9 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(TAG, "onCreate: ===========================");
+        Log.d(TAG, "onCreate ");
 
         // Init
-        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         mHandler = new Handler();
 
         // Prepare player
@@ -101,7 +98,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         Log.d(TAG, "onStartCommand: ");
         startNotification();
 
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
     @Nullable
@@ -156,6 +153,7 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     public void pause() {
         if (mSTATE == PLAY) {
             mPlayer.pause();
+            stopForeground(true);
             mSTATE = PAUSE;
         }
     }
@@ -164,12 +162,13 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mSTATE == PLAY || mSTATE == PAUSE || mSTATE == COMPLETE) {
             mPlayer.stop();
             mSTATE = STOP;
+            stopForeground(true);
             prepareMediaPlayer();
         }
     }
 
-    public void prepareMediaPlayer() {
-        if (mSTATE == IDLE || mSTATE == STOP) {
+    private void prepareMediaPlayer() {
+        if (mSTATE == IDLE || mSTATE == STOP || mSTATE == PAUSE) {
             mPlayer = MediaPlayer.create(this, mSong.getSongId());
             mPlayer.setOnCompletionListener(this);
             mSTATE = PREPARED;
@@ -180,9 +179,11 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mSongIndex < sSongs.size() - 1) {
             mSong = sSongs.get(++mSongIndex);
             sendUpdateBroadcast(mSongIndex);
-            stop();
-            play();
-            prepareNewNotification();
+            if (mPlayer.isPlaying()) {
+                stop();
+                play();
+                startNotification();
+            } else prepareMediaPlayer();
         } else Toast.makeText(this, "End of list", Toast.LENGTH_SHORT).show();
     }
 
@@ -190,22 +191,16 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         if (mSongIndex > 0) {
             mSong = sSongs.get(--mSongIndex);
             sendUpdateBroadcast(mSongIndex);
-            stop();
-            play();
-            prepareNewNotification();
+            if (mPlayer.isPlaying()) {
+                stop();
+                play();
+                startNotification();
+            } else prepareMediaPlayer();
         } else Toast.makeText(this, "Beginning of list", Toast.LENGTH_SHORT).show();
     }
 
     public void setLooping(boolean loop) {
         mPlayer.setLooping(loop);
-    }
-
-    public boolean isLooping() {
-        return mPlayer.isLooping();
-    }
-
-    public boolean isShuffle() {
-        return mShuffle;
     }
 
     public void seekTo(int place) {
@@ -214,14 +209,25 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
         }
     }
 
+    public boolean getLooping() {
+        return mPlayer.isLooping();
+    }
+
+    public boolean getShuffle() {
+        return mShuffle;
+    }
+
+    public int getCurrentSongIndex() {
+        return mSongIndex;
+    }
+
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
 
         // Change is complete
         mSTATE = COMPLETE;
-        stopForeground(true);
 
-        // Check if to loop or shuffle
+        // If shuffle or loop // else stop foreground
         Log.d(TAG, "onCompletion: " + " shuffle " + mShuffle);
         if (mShuffle) {
             int random = (int) Math.round(Math.random() * (sSongs.size() - 1));
@@ -230,6 +236,8 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
             mSong = sSongs.get(random);
             stop();
             play();
+        } else if (!getLooping()) {
+            stopForeground(true);
         }
     }
 
@@ -244,22 +252,13 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     private void startNotification() {
         NotificationCompat.Builder notificationBuilder = getBuilder();
 
-        mNotification = notificationBuilder.build();
+        Notification notification = notificationBuilder.build();
 
-        startForeground(1, mNotification);
-    }
-
-    private void prepareNewNotification() {
-        NotificationCompat.Builder notificationBuilder = getBuilder();
-
-        mNotification = notificationBuilder.build();
-
-        mNotificationManager.notify(1, mNotification);
+        startForeground(1, notification);
     }
 
     private PendingIntent getIntent() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(Intent.EXTRA_TEXT, mSongIndex);
         return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
@@ -285,14 +284,14 @@ public class MediaPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     private PendingIntent getPreviousIntent() {
-        Intent intent = new Intent(ACTION);
-        intent.putExtra(EXTRA_INDEX, --mSongIndex);
+        Log.d(TAG, "getPreviousIntent: ");
+        Intent intent = new Intent(PlaybackReceiver.ACTION_BACKWARD);
         return PendingIntent.getBroadcast(this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent getNextIntent() {
-        Intent intent = new Intent(ACTION);
-        intent.putExtra(EXTRA_INDEX, ++mSongIndex);
+        Log.d(TAG, "getNextIntent: ");
+        Intent intent = new Intent(PlaybackReceiver.ACTION_FORWARD);
         return PendingIntent.getBroadcast(this, 2, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

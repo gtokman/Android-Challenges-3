@@ -18,6 +18,13 @@
 
         <service android:name=".service.MediaPlayerService"/>
 
+        <receiver android:name=".receiver.PlaybackReceiver">
+            <intent-filter>
+                <action android:name="com.garytokman_ce0.ACTION.PlayBackForward"/>
+                <action android:name="com.garytokman_ce0.ACTION.PlayBackBackward"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

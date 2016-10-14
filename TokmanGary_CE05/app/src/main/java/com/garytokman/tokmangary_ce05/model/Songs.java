@@ -15,7 +15,7 @@ public class Songs {
         List<Song> songs = new ArrayList<>();
 
         songs.add(new Song("Disclosure", "Flume", R.drawable.album1, R.raw.disclosure));
-        songs.add(new Song("Helix", "Flume", R.drawable.album2, R.raw.helix));
+        songs.add(new Song("Helix", "Daya", R.drawable.album2, R.raw.helix));
         songs.add(new Song("Redhead", "Flume", R.drawable.album3, R.raw.redhead));
 
         return songs;

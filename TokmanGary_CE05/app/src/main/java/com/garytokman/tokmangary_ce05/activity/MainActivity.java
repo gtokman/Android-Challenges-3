@@ -14,7 +14,12 @@ import android.util.Log;
 
 import com.garytokman.tokmangary_ce05.R;
 import com.garytokman.tokmangary_ce05.fragments.MediaPlayerFragment;
+import com.garytokman.tokmangary_ce05.receiver.PlaybackReceiver;
 import com.garytokman.tokmangary_ce05.service.MediaPlayerService;
+
+// Gary Tokman
+// MDF3 - 1610
+// MainActivity
 
 public class MainActivity extends AppCompatActivity implements ServiceConnection, MediaPlayerFragment.OnMediaControlSelected {
 
@@ -22,15 +27,8 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private MediaPlayerService mMediaPlayerService;
-    public MediaPlayerFragment mMediaPlayerFragment;
+    private MediaPlayerFragment mMediaPlayerFragment;
     private boolean mBound;
-    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            int index = intent.getIntExtra(MediaPlayerService.EXTRA_INDEX, 0);
-            mMediaPlayerFragment.setSongInfo(index);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         bindService(intent, this, BIND_AUTO_CREATE);
 
         IntentFilter filter = new IntentFilter(MediaPlayerService.ACTION);
+        filter.addAction(PlaybackReceiver.ACTION_UPDATE);
         LocalBroadcastManager.getInstance(this).registerReceiver(mBroadcastReceiver, filter);
     }
 
@@ -75,10 +74,32 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mBroadcastReceiver);
     }
 
+    private final BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "onReceive: " + intent.getAction());
+
+            String action = intent.getAction();
+            if (action.equals(MediaPlayerService.ACTION)) {
+
+                // Update UI on song change
+                int index = intent.getIntExtra(MediaPlayerService.EXTRA_INDEX, 0);
+                mMediaPlayerFragment.setSongInfo(index);
+            } else if (action.equals(PlaybackReceiver.ACTION_UPDATE)) {
+
+                // Notification play next / previous
+                if (intent.hasExtra(PlaybackReceiver.EXTRA_UPDATE)) {
+                    int i = intent.getExtras().getInt(PlaybackReceiver.EXTRA_UPDATE);
+                    if (i == 1) mMediaPlayerService.playNext();
+                    else mMediaPlayerService.playPrevious();
+                }
+            }
+        }
+    };
+
     @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
         mBound = true;
-        Log.d(TAG, "onServiceConnected: " + mBound);
 
         // Init service
         MediaPlayerService.MediaPlayerBinder localBinder = (MediaPlayerService.MediaPlayerBinder) iBinder;
@@ -88,10 +109,9 @@ public class MainActivity extends AppCompatActivity implements ServiceConnection
         // When starting activity with pending intent check for current song index
         // After service binds with started foreground service
         // Update UI with current song
-        if (getIntent().hasExtra(Intent.EXTRA_TEXT)) {
-            mMediaPlayerFragment.setSongInfo(getIntent().getExtras().getInt(Intent.EXTRA_TEXT));
-        }
-
+        mMediaPlayerFragment.setSongInfo(mMediaPlayerService.getCurrentSongIndex());
+        mMediaPlayerFragment.setShuffle(mMediaPlayerService.getShuffle());
+        mMediaPlayerFragment.setLooping(mMediaPlayerService.getLooping());
     }
 
     @Override

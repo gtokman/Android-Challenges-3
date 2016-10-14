@@ -1,14 +1,14 @@
 package com.garytokman.tokmangary_ce05.model;
 // Gary Tokman
 // MDF3 - 1610
-// TokmanGary_CE05
+// Song
 
 public class Song {
 
-    private String mTrackName;
-    private String mArtist;
-    private int mSongId;
-    private int mImageId;
+    private final String mTrackName;
+    private final String mArtist;
+    private final int mSongId;
+    private final int mImageId;
 
     public Song(String name, String artist, int imageId, int songId) {
         mTrackName = name;

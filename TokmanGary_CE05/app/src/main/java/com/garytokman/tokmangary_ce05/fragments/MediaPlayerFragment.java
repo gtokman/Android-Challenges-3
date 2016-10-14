@@ -19,7 +19,7 @@ import com.garytokman.tokmangary_ce05.service.MediaPlayerService;
 
 // Gary Tokman
 // MDF3 - 1610
-// TokmanGary_CE05
+// MediaPlayerFragment
 
 public class MediaPlayerFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, CompoundButton.OnCheckedChangeListener {
 
@@ -28,6 +28,7 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
     private SeekBar mSeekBar;
     private CheckBox mLoop;
     private CheckBox mShuffle;
+
 
     public interface OnMediaControlSelected {
         void onPlaySelected();
@@ -73,19 +74,21 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
         View view = getView();
 
         // Init
-        view.findViewById(R.id.play).setOnClickListener(this);
-        view.findViewById(R.id.pause).setOnClickListener(this);
-        view.findViewById(R.id.stop).setOnClickListener(this);
-        view.findViewById(R.id.skipForward).setOnClickListener(this);
-        view.findViewById(R.id.skipBack).setOnClickListener(this);
-        mLoop = (CheckBox) view.findViewById(R.id.loop);
-        mShuffle = (CheckBox) view.findViewById(R.id.shuffle);
-        mLoop.setOnCheckedChangeListener(this);
-        mShuffle.setOnCheckedChangeListener(this);
-        mSeekBar = (SeekBar) view.findViewById(R.id.seekBar);
-        mSeekBar.setOnSeekBarChangeListener(this);
-        mSongInfo = (TextView) view.findViewById(R.id.songTitle);
-        mAlbumArt = (ImageView) view.findViewById(R.id.albumArt);
+        if (view != null) {
+            view.findViewById(R.id.playButton).setOnClickListener(this);
+            view.findViewById(R.id.pauseButton).setOnClickListener(this);
+            view.findViewById(R.id.stopButton).setOnClickListener(this);
+            view.findViewById(R.id.skipForward).setOnClickListener(this);
+            view.findViewById(R.id.skipBack).setOnClickListener(this);
+            mLoop = (CheckBox) view.findViewById(R.id.loop);
+            mShuffle = (CheckBox) view.findViewById(R.id.shuffle);
+            mLoop.setOnCheckedChangeListener(this);
+            mShuffle.setOnCheckedChangeListener(this);
+            mSeekBar = (SeekBar) view.findViewById(R.id.seekBar);
+            mSeekBar.setOnSeekBarChangeListener(this);
+            mSongInfo = (TextView) view.findViewById(R.id.songTitle);
+            mAlbumArt = (ImageView) view.findViewById(R.id.albumArt);
+        }
     }
 
     public void setSongInfo(int index) {
@@ -102,13 +105,13 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.play:
+            case R.id.playButton:
                 mSelected.onPlaySelected();
                 break;
-            case R.id.pause:
+            case R.id.pauseButton:
                 mSelected.onPauseSelected();
                 break;
-            case R.id.stop:
+            case R.id.stopButton:
                 mSelected.onStopSelected();
                 break;
             case R.id.skipBack:
@@ -147,11 +150,11 @@ public class MediaPlayerFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    public void setLooping(boolean isLooping) {
-        mLoop.setChecked(isLooping);
+    public void setShuffle(boolean shuffle) {
+        mShuffle.setChecked(shuffle);
     }
 
-    public void setShuffle(boolean isShuffle) {
-        mShuffle.setChecked(isShuffle);
+    public void setLooping(boolean looping) {
+        mLoop.setChecked(looping);
     }
 }
