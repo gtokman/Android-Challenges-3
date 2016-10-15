@@ -1,4 +1,31 @@
 <resources>
     <string name="app_name">TokmanGary_CE06</string>
     <string name="weather_icon">Weather Icon</string>
+    <string name="theme_summary">Change the theme of the widget.</string>
+    <string name="city_summary">Select a location for weather updates.</string>
+
+    <!--List Pref Theme-->
+    <string-array name="theme_types">
+        <item>Dark</item>
+        <item>Light</item>
+    </string-array>
+
+    <string-array name="theme_values">
+        <item>VALUE_DARK</item>
+        <item>VALUE_LIGHT</item>
+    </string-array>
+
+    <!--List Pref Location-->
+    <string-array name="location_types">
+        <item>Orlando, FL</item>
+        <item>San Francisco, CA</item>
+        <item>Boston, MA</item>
+    </string-array>
+
+    <string-array name="location_values">
+        <item>VALUE_ORLANDO</item>
+        <item>VALUE_FRANCISCO</item>
+        <item>VALUE_BOSTON</item>
+    </string-array>
+
 </resources>

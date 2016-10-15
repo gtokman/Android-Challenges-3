@@ -37,4 +37,8 @@ public class CurrentForecast {
     public String getIconUrl() {
         return mIconUrl;
     }
+
+    public String getConditions() {
+        return mConditions;
+    }
 }
