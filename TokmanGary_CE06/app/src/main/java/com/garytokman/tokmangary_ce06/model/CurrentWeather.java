@@ -6,7 +6,9 @@ package com.garytokman.tokmangary_ce06.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CurrentWeather {
+import java.io.Serializable;
+
+public class CurrentWeather implements Serializable{
 
     private String mDescription;
     private long mTemperature;
@@ -36,5 +38,10 @@ public class CurrentWeather {
 
     public String getIconUrl() {
         return mIconUrl;
+    }
+
+    @Override
+    public String toString() {
+        return mLastUpdate;
     }
 }

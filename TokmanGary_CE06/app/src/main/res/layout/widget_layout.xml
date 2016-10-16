@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="horizontal"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:gravity="center_vertical|center_horizontal">
 
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
         android:id="@+id/weatherIcon"
-        android:layout_weight="1"
         android:scaleType="fitEnd"
         android:contentDescription="Weather Icon"/>
 
@@ -23,36 +23,33 @@
         android:layout_gravity="center_vertical|center_horizontal">
 
         <TextView
-            android:text="Overcast"
+            tools:text="Overcast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/conditionLabel"
             android:textAlignment="center"
-            android:padding="4dp"
             android:typeface="normal"/>
 
         <TextView
-            android:text="30º F"
+            tools:text="30º F"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/temperatureLabel"
-            android:padding="4dp"/>
+            />
 
         <TextView
-            android:text="12/25/2016 - 07:30"
-            android:layout_width="match_parent"
+            tools:text="12/25/2016 - 07:30"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/timeLabel"
             android:textAlignment="center"
-            android:padding="4dp"
             android:textSize="10sp"/>
     </LinearLayout>
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/configButton"
-        android:layout_weight="1"
         android:padding="4dp"
         android:text="Config"
         style="@style/Widget.AppCompat.Button.Colored"/>

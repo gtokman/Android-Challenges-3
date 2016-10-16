@@ -19,7 +19,7 @@
             android:defaultValue="VALUE_ORLANDO"
             android:entries="@array/location_types"
             android:entryValues="@array/location_values"
-            android:key="CITY_PREFERENCE"
+            android:key="LOCATION_PREFERENCE"
             android:summary="@string/city_summary"
             android:title="Cities"/>
     </PreferenceCategory>
