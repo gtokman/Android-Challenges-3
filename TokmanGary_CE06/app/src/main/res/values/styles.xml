@@ -8,4 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- app/src/main/res/values/styles.xml -->
+    <style name="Dark" parent="Theme.AppCompat.DayNight.DarkActionBar">
+        <!-- Dark theme base colours -->
+        <item name="colorPrimary">@color/ebony</item>
+        <item name="colorPrimaryDark">@color/white_smoke</item>
+        <item name="colorAccent">@color/west_side</item>
+    </style>
+
 </resources>

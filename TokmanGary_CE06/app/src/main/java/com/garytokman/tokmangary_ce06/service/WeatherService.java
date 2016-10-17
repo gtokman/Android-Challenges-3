@@ -1,6 +1,7 @@
 package com.garytokman.tokmangary_ce06.service;
 
 import android.app.IntentService;
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.util.Log;
 
@@ -52,6 +53,11 @@ public class WeatherService extends IntentService {
 
             // Save
             WidgetHelpers.saveCurrentWeather(this, currentWeather);
+
+            // Update
+            AppWidgetManager manager = AppWidgetManager.getInstance(this);
+            int widgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
+            WidgetHelpers.updateWidgetWithId(this, manager, widgetId);
 
 
         } catch (IOException | JSONException e) {

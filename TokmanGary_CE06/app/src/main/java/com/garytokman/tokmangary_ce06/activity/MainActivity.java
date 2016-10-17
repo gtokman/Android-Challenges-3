@@ -10,7 +10,6 @@ import android.view.MenuItem;
 
 import com.garytokman.tokmangary_ce06.R;
 import com.garytokman.tokmangary_ce06.fragment.WeatherPrefFragment;
-import com.garytokman.tokmangary_ce06.helper.WidgetHelpers;
 import com.garytokman.tokmangary_ce06.service.WeatherService;
 
 import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
@@ -26,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // Init with fragment
         getFragmentManager()
@@ -58,17 +58,15 @@ public class MainActivity extends AppCompatActivity {
 
             // Start service
             Intent intent = new Intent(this, WeatherService.class);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mWidgetId);
             startService(intent);
-
-            // Update
-            AppWidgetManager manager = AppWidgetManager.getInstance(this);
-            WidgetHelpers.updateWidgetWithId(this, manager, mWidgetId);
 
             // TODO: To update the widget we need, widgetId, Context, WidgetManager
             // After update tell the system the update is successful, use intent, put extra widget id, and set result
             Intent data = new Intent();
             data.putExtra(EXTRA_APPWIDGET_ID, mWidgetId);
             setResult(RESULT_OK, data);
+            finish();
 
             return true;
         } else {

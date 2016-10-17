@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.garytokman.tokmangary_ce06.helper.WidgetHelpers;
+import com.garytokman.tokmangary_ce06.service.WeatherService;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -21,6 +22,11 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
         Log.d(TAG, "onUpdate: ======================= ");
 
         // Make call to network
+
+        // Start service
+        Intent intent = new Intent(context, WeatherService.class);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetIds[0]);
+        context.startService(intent);
 
         for (int appWidgetId : appWidgetIds) {
             WidgetHelpers.updateWidgetWithId(context, appWidgetManager, appWidgetId);

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Light-->
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--Dark-->
+    <color name="ebony">#303334</color>
+    <color name="white_smoke">#F5F5F5</color>
+    <color name="west_side">#FC970B</color>
+
+
 </resources>

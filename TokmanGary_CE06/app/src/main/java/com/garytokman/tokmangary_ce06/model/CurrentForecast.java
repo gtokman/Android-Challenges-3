@@ -1,12 +1,14 @@
 package com.garytokman.tokmangary_ce06.model;
 // Gary Tokman
 // MDF3 - 1610
-// TokmanGary_CE06
+// CurrentForecast
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CurrentForecast {
+import java.io.Serializable;
+
+public class CurrentForecast implements Serializable {
 
     private String mDay;
     private String mHighTemperature;

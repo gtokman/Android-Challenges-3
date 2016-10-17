@@ -13,6 +13,10 @@
         android:theme="@style/AppTheme">
 
         <!--Forecast Activity-->
+        <activity android:name=".activity.ForecastActivity"
+            android:label="Forecast Activity">
+
+        </activity>
 
         <!--Config Activity-->
         <activity android:name=".activity.MainActivity"

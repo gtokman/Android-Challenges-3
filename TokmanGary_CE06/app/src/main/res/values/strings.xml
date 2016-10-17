@@ -3,6 +3,7 @@
     <string name="weather_icon">Weather Icon</string>
     <string name="theme_summary">Change the theme of the widget.</string>
     <string name="city_summary">Select a location for weather updates.</string>
+    <string name="weather_icon_desc">Weather Icon</string>
 
     <!--List Pref Theme-->
     <string-array name="theme_types">

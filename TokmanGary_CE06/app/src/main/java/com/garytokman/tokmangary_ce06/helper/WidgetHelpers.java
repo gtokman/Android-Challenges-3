@@ -3,17 +3,23 @@ package com.garytokman.tokmangary_ce06.helper;
 // MDF3 - 1610
 // WidgetHelpers
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.garytokman.tokmangary_ce06.R;
+import com.garytokman.tokmangary_ce06.activity.ForecastActivity;
+import com.garytokman.tokmangary_ce06.activity.MainActivity;
 import com.garytokman.tokmangary_ce06.model.CurrentWeather;
 import com.garytokman.tokmangary_ce06.model.Location;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.IOUtils;
 
@@ -139,11 +145,9 @@ public class WidgetHelpers {
     public static void updateWidgetWithId(Context context, AppWidgetManager manager, int widgetId) {
 
         CurrentWeather currentWeather = null;
-        Bitmap weatherIcon = null;
 
         try {
             currentWeather = loadCurrentWeather(context);
-//            weatherIcon = Picasso.with(context).load(currentWeather.getIconUrl()).get();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -153,15 +157,40 @@ public class WidgetHelpers {
             // Remote views
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
-            // Init UI
-//            remoteViews.setImageViewBitmap(R.id.weatherIcon, weatherIcon);
+            setWidgetIcon(context, widgetId, currentWeather, remoteViews);
             remoteViews.setTextViewText(R.id.conditionLabel, currentWeather.getDescription());
             remoteViews.setTextViewText(R.id.temperatureLabel, String.valueOf(currentWeather.getTemperature()) + " ºF");
             remoteViews.setTextViewText(R.id.timeLabel, currentWeather.getLastUpdate());
 
+            // Click listener
+            remoteViews.setOnClickPendingIntent(R.id.configButton, getPendingIntent(context, widgetId, MainActivity.class));
+            remoteViews.setOnClickPendingIntent(R.id.weatherIcon, getPendingIntent(context, widgetId, ForecastActivity.class));
+
             // Update widget
             manager.updateAppWidget(widgetId, remoteViews);
         }
+    }
+
+    private static void setWidgetIcon(final Context context, final int widgetId, CurrentWeather currentWeather, final RemoteViews remoteViews) {
+        Handler handler = new Handler(Looper.getMainLooper());
+        final CurrentWeather finalCurrentWeather = currentWeather;
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                // Init UI
+
+                Picasso.with(context)
+                        .load(finalCurrentWeather.getIconUrl()).resize(150, 150)
+                        .into(remoteViews, R.id.weatherIcon, new int[widgetId]);
+            }
+        });
+    }
+
+    private static PendingIntent getPendingIntent(Context context, int widgetId, Class<?> activity) {
+        Intent intent = new Intent(context, activity);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 }

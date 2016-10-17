@@ -12,11 +12,11 @@
         android:src="@mipmap/ic_launcher"
         android:id="@+id/weatherIcon"
         android:scaleType="fitEnd"
-        android:contentDescription="Weather Icon"/>
+        android:contentDescription="@string/weather_icon_desc"/>
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center_vertical|center_horizontal"
