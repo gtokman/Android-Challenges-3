@@ -1,4 +1,4 @@
-package com.garytokman.tokmangary_ce06;
+package com.garytokman.tokmangary_ce06.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.garytokman.tokmangary_ce06.R;
 import com.garytokman.tokmangary_ce06.model.CurrentForecast;
 import com.squareup.picasso.Picasso;
 

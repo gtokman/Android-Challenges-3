@@ -72,9 +72,9 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mWidgetId);
             startService(intent);
 
+            // Update app theme
             updateTheme();
 
-            // TODO: To update the widget we need, widgetId, Context, WidgetManager
             // After update tell the system the update is successful, use intent, put extra widget id, and set result
             Intent data = new Intent();
             data.putExtra(EXTRA_APPWIDGET_ID, mWidgetId);

@@ -4,7 +4,7 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.View;
 
-import com.garytokman.tokmangary_ce06.ForecastAdapter;
+import com.garytokman.tokmangary_ce06.adapter.ForecastAdapter;
 import com.garytokman.tokmangary_ce06.model.CurrentForecast;
 
 import java.io.Serializable;
