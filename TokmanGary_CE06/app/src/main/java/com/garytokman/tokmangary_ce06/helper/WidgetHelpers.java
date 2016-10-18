@@ -19,6 +19,7 @@ import com.garytokman.tokmangary_ce06.activity.ForecastActivity;
 import com.garytokman.tokmangary_ce06.activity.MainActivity;
 import com.garytokman.tokmangary_ce06.model.CurrentWeather;
 import com.garytokman.tokmangary_ce06.model.Location;
+import com.garytokman.tokmangary_ce06.service.WeatherService;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.io.IOUtils;
@@ -41,14 +42,15 @@ public class WidgetHelpers {
     * */
 
     public static final String BASE_URL = "http://api.wunderground.com/api/4a24d904d6e72011/";
+    public static final String THEME_KEY = "THEME_PREFERENCE";
 
     private static final String TAG = WidgetHelpers.class.getSimpleName();
     private static final String WEATHER_FILE = "WeatherFile";
 
-    public static String getJsonWithUrl(String responseType, Location location) throws IOException {
+    public static String getJsonWithUrl(Location location) throws IOException {
 
         // Create Url
-        URL url = new URL(BASE_URL + responseType + "/q/"
+        URL url = new URL(BASE_URL + "conditions" + "/q/"
                 + location.getState() + "/"
                 + location.getCity() + ".json");
 
@@ -69,7 +71,7 @@ public class WidgetHelpers {
         return json;
     }
 
-    public static Location getPrefValue(Context context, String key) {
+    public static Location getPrefValue(Context context) {
 
         // Get shared pref
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -77,7 +79,7 @@ public class WidgetHelpers {
         Location location;
 
         // Get value
-        String value = sharedPreferences.getString(key, "Error");
+        String value = sharedPreferences.getString(WeatherService.LOCATION_KEY, "Error");
         Log.d(TAG, "getPrefValue: " + value);
 
         /*Api is awful and does not allow to easily query by location like normal apis ex: location=?*/
@@ -121,7 +123,7 @@ public class WidgetHelpers {
 
     }
 
-    public static CurrentWeather loadCurrentWeather(Context context) throws IOException, ClassNotFoundException {
+    private static CurrentWeather loadCurrentWeather(Context context) throws IOException, ClassNotFoundException {
         // Get file
         File file = new File(context.getFilesDir(), WEATHER_FILE);
 
@@ -142,7 +144,7 @@ public class WidgetHelpers {
         return currentWeather;
     }
 
-    public static void updateWidgetWithId(Context context, AppWidgetManager manager, int widgetId) {
+    public static void updateWidgetWithId(final Context context, AppWidgetManager manager, final int widgetId) {
 
         CurrentWeather currentWeather = null;
 
@@ -155,9 +157,20 @@ public class WidgetHelpers {
         if (currentWeather != null) {
 
             // Remote views
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+            final RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
-            setWidgetIcon(context, widgetId, currentWeather, remoteViews);
+            // Load image
+            Handler handler = new Handler(Looper.getMainLooper());
+            final CurrentWeather finalCurrentWeather = currentWeather;
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "run: " + finalCurrentWeather.getIconUrl());
+                    Picasso.with(context).load(finalCurrentWeather.getIconUrl()).resize(150, 150)
+                            .into(remoteViews, R.id.weatherIcon, new int[widgetId]);
+                }
+            });
+
             remoteViews.setTextViewText(R.id.conditionLabel, currentWeather.getDescription());
             remoteViews.setTextViewText(R.id.temperatureLabel, String.valueOf(currentWeather.getTemperature()) + " ºF");
             remoteViews.setTextViewText(R.id.timeLabel, currentWeather.getLastUpdate());
@@ -169,21 +182,6 @@ public class WidgetHelpers {
             // Update widget
             manager.updateAppWidget(widgetId, remoteViews);
         }
-    }
-
-    private static void setWidgetIcon(final Context context, final int widgetId, CurrentWeather currentWeather, final RemoteViews remoteViews) {
-        Handler handler = new Handler(Looper.getMainLooper());
-        final CurrentWeather finalCurrentWeather = currentWeather;
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                // Init UI
-
-                Picasso.with(context)
-                        .load(finalCurrentWeather.getIconUrl()).resize(150, 150)
-                        .into(remoteViews, R.id.weatherIcon, new int[widgetId]);
-            }
-        });
     }
 
     private static PendingIntent getPendingIntent(Context context, int widgetId, Class<?> activity) {

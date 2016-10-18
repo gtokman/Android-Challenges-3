@@ -17,7 +17,6 @@ import java.util.List;
 
 public class ForecastListFragment extends ListFragment  {
 
-    private static final String TAG = ForecastListFragment.class.getSimpleName();
     private static final String FORECAST = "FORECAST";
 
     public static ForecastListFragment newInstance(List<CurrentForecast> forecasts) {

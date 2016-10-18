@@ -5,8 +5,8 @@ package com.garytokman.tokmangary_ce06.model;
 
 public class Location {
 
-    private String mCity;
-    private String mState;
+    private final String mCity;
+    private final String mState;
 
     public Location(String city, String state) {
         this.mCity = city;

@@ -1,7 +1,7 @@
 package com.garytokman.tokmangary_ce06.model;
 // Gary Tokman
 // MDF3 - 1610
-// TokmanGary_CE06
+// CurrentWeather
 
 import org.json.JSONException;
 import org.json.JSONObject;

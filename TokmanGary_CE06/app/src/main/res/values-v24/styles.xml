@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Dark" parent="android:Theme.Material.Light.DialogWhenLarge.DarkActionBar">
+        <!-- Dark theme base colours -->
+        <item name="colorPrimary">@color/ebony</item>
+        <item name="colorPrimaryDark">@color/white_smoke</item>
+        <item name="colorAccent">@color/west_side</item>
+
+    </style>
+</resources>

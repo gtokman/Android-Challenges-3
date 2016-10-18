@@ -3,8 +3,13 @@ package com.garytokman.tokmangary_ce06.activity;
 // MDF3 - 1610
 // ForecastActivity
 
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -14,7 +19,6 @@ import com.garytokman.tokmangary_ce06.helper.WeatherTask;
 import com.garytokman.tokmangary_ce06.helper.WidgetHelpers;
 import com.garytokman.tokmangary_ce06.model.CurrentForecast;
 import com.garytokman.tokmangary_ce06.model.Location;
-import com.garytokman.tokmangary_ce06.service.WeatherService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +26,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.garytokman.tokmangary_ce06.helper.WidgetHelpers.THEME_KEY;
 
 public class ForecastActivity extends AppCompatActivity implements WeatherTask.OnWeatherTaskComplete {
 
@@ -35,11 +41,14 @@ public class ForecastActivity extends AppCompatActivity implements WeatherTask.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forecast_activity);
 
+        // Theme
+        updateTheme();
+
         // Init
         mCurrentForecastList = new ArrayList<>();
 
         // Get json
-        Location location = WidgetHelpers.getPrefValue(this, WeatherService.LOCATION_KEY);
+        Location location = WidgetHelpers.getPrefValue(this);
         WeatherTask weatherTask = new WeatherTask(location, this);
         weatherTask.execute("forecast");
 
@@ -70,6 +79,23 @@ public class ForecastActivity extends AppCompatActivity implements WeatherTask.O
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void updateTheme() {
+        // Get value
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String theme = sharedPreferences.getString(THEME_KEY, "VALUE_LIGHT");
+
+        // Check
+        if (theme.equals("VALUE_DARK")) {
+            setTheme(R.style.Dark);
+            ActionBar supportActionBar = getSupportActionBar();
+            if (supportActionBar != null) {
+                supportActionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#303334")));
+            }
+        } else {
+            setTheme(R.style.AppTheme);
         }
     }
 }

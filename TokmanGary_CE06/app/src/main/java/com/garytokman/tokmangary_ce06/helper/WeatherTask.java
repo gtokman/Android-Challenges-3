@@ -19,15 +19,14 @@ import java.net.URL;
 
 public class WeatherTask extends AsyncTask<String, Void, String> {
 
-    private static final String TAG = WeatherTask.class.getSimpleName();
     private ProgressDialog mDialog;
 
     public interface OnWeatherTaskComplete {
         void getForecastJson(String json);
     }
 
-    private Location mLocation;
-    private Context mContext;
+    private final Location mLocation;
+    private final Context mContext;
     private OnWeatherTaskComplete mComplete;
 
 

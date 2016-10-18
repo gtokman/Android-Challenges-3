@@ -20,7 +20,6 @@ import java.io.IOException;
 
 public class WeatherService extends IntentService {
 
-    public static final String THEME_KEY = "THEME_PREFERENCE";
     public static final String LOCATION_KEY = "LOCATION_PREFERENCE";
     private static final String TAG = WeatherService.class.getSimpleName();
 
@@ -30,18 +29,13 @@ public class WeatherService extends IntentService {
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
-    @Override
     protected void onHandleIntent(Intent intent) {
 
         // Get location
-        Location location = WidgetHelpers.getPrefValue(this, LOCATION_KEY);
+        Location location = WidgetHelpers.getPrefValue(this);
         try {
             // Get json
-            String json = WidgetHelpers.getJsonWithUrl("conditions", location);
+            String json = WidgetHelpers.getJsonWithUrl(location);
             JSONObject jsonObject = new JSONObject(json);
             JSONObject currentObservation = jsonObject.getJSONObject("current_observation");
 
@@ -57,8 +51,8 @@ public class WeatherService extends IntentService {
             // Update
             AppWidgetManager manager = AppWidgetManager.getInstance(this);
             int widgetId = intent.getExtras().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID);
-            WidgetHelpers.updateWidgetWithId(this, manager, widgetId);
 
+            WidgetHelpers.updateWidgetWithId(this, manager, widgetId);
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();

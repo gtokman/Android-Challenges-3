@@ -19,8 +19,8 @@ import java.util.List;
 
 public class ForecastAdapter extends BaseAdapter {
 
-    private List<CurrentForecast> mForecasts;
-    private Context mContext;
+    private final List<CurrentForecast> mForecasts;
+    private final Context mContext;
 
     public ForecastAdapter(List<CurrentForecast> forecasts, Context context) {
         mForecasts = forecasts;
