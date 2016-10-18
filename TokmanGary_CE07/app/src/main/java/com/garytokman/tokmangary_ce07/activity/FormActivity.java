@@ -1,24 +1,26 @@
 package com.garytokman.tokmangary_ce07.activity;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
+import com.garytokman.tokmangary_ce07.fragment.FormFragment;
 import com.garytokman.tokmangary_ce07.R;
-import com.garytokman.tokmangary_ce07.fragment.CarListFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class FormActivity extends AppCompatActivity {
+
+    private static final String FORM_FRAGMENT = "FORM_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_form);
 
-        setTitle("Car list");
+        setTitle("Add a new car");
 
         // Add frag
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.listContainer, new CarListFragment(), "FIST_FRAGMENT")
+                .add(R.id.formContainer, new FormFragment(), FORM_FRAGMENT)
                 .commit();
     }
 }

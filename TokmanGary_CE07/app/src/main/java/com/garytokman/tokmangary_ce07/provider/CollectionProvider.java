@@ -8,7 +8,8 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import com.garytokman.tokmangary_ce07.R;
-import com.garytokman.tokmangary_ce07.activity.MainActivity;
+import com.garytokman.tokmangary_ce07.activity.DetailActivity;
+import com.garytokman.tokmangary_ce07.activity.FormActivity;
 import com.garytokman.tokmangary_ce07.service.CollectionWidgetService;
 
 // Gary Tokman
@@ -29,18 +30,20 @@ public class CollectionProvider extends AppWidgetProvider {
 
         // Set
         remoteViews.setRemoteAdapter(R.id.listView, serviceIntent);
-
-        // If empty list so text
         remoteViews.setEmptyView(R.id.listView, R.id.emptyText);
 
-        // Set listener
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        remoteViews.setPendingIntentTemplate(R.id.listView, pendingIntent);
+        // If empty list so text TODO: Make show detail
+        remoteViews.setPendingIntentTemplate(R.id.listView, getPendingIntent(context, DetailActivity.class));
+        remoteViews.setOnClickPendingIntent(R.id.formButton, getPendingIntent(context, FormActivity.class));
 
         // Update widget
         appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
 
+    }
+
+    private PendingIntent getPendingIntent(Context context, Class<?> activity) {
+        // Set listener
+        Intent intent = new Intent(context, activity);
+        return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
