@@ -1,0 +1,46 @@
+package com.garytokman.tokmangary_ce07.provider;
+
+import android.app.PendingIntent;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProvider;
+import android.content.Context;
+import android.content.Intent;
+import android.widget.RemoteViews;
+
+import com.garytokman.tokmangary_ce07.R;
+import com.garytokman.tokmangary_ce07.activity.MainActivity;
+import com.garytokman.tokmangary_ce07.service.CollectionWidgetService;
+
+// Gary Tokman
+// MDF3 - 1610
+// CollectionProvider
+
+public class CollectionProvider extends AppWidgetProvider {
+
+    @Override
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+
+        // Create remote views
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+
+        // Start service that returns the remote view factory
+        Intent serviceIntent = new Intent(context, CollectionWidgetService.class);
+
+        // Set
+        remoteViews.setRemoteAdapter(R.id.listView, serviceIntent);
+
+        // If empty list so text
+        remoteViews.setEmptyView(R.id.listView, R.id.emptyText);
+
+        // Set listener
+        Intent intent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        remoteViews.setPendingIntentTemplate(R.id.listView, pendingIntent);
+
+        // Update widget
+        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+
+    }
+}
