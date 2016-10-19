@@ -10,13 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
 import com.garytokman.tokmangary_ce07.R;
 import com.garytokman.tokmangary_ce07.activity.DetailActivity;
 import com.garytokman.tokmangary_ce07.activity.FormActivity;
 import com.garytokman.tokmangary_ce07.database.CarDatabase;
 import com.garytokman.tokmangary_ce07.database.DatabaseSchema.CarTable.Columns;
+import com.garytokman.tokmangary_ce07.helper.CursorHelper;
+import com.garytokman.tokmangary_ce07.model.Car;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -24,6 +25,7 @@ import com.garytokman.tokmangary_ce07.database.DatabaseSchema.CarTable.Columns;
 
 public class CarListFragment extends ListFragment {
 
+    public static final String EXTRA_CAR = "EXTRA_CAR";
     private SimpleCursorAdapter mAdapter;
 
     @Override
@@ -63,8 +65,14 @@ public class CarListFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Toast.makeText(getActivity(), "Cars", Toast.LENGTH_SHORT).show();
+
+        Cursor carCursor = (Cursor) l.getAdapter().getItem(position);
+        CursorHelper helper = new CursorHelper(carCursor);
+        Car car = helper.getCar();
+
+        // Open detail
         Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(EXTRA_CAR, car);
         startActivity(intent);
     }
 

@@ -3,7 +3,9 @@ package com.garytokman.tokmangary_ce07.model;
 // MDF3 - 1610
 // Car
 
-public class Car {
+import java.io.Serializable;
+
+public class Car implements Serializable {
 
     private String mMake;
     private String mModel;

@@ -4,6 +4,11 @@ import android.content.Context;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.garytokman.tokmangary_ce07.model.Car;
+
+import java.util.ArrayList;
+import java.util.List;
+
 // Gary Tokman
 // MDF3 - 1610
 // CollectionWidgetFactory
@@ -11,19 +16,17 @@ import android.widget.RemoteViewsService;
 public class CollectionWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
-//    private List<Person> mPersons;
+    private List<Car> mCars;
 
     public CollectionWidgetFactory(Context context) {
         mContext = context;
-//        mPersons = new ArrayList<>();
+        mCars = new ArrayList<>();
     }
 
     @Override
     public void onCreate() {
 
-//        for (int i = 0; i < 10; i++) {
-//            mPersons.add(new Person("Gary"));
-//        }
+
     }
 
     @Override
@@ -64,7 +67,7 @@ public class CollectionWidgetFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return mCars.size();
     }
 
     @Override
