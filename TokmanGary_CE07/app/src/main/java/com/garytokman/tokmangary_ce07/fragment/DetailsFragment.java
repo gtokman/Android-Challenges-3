@@ -4,6 +4,9 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -15,6 +18,12 @@ import com.garytokman.tokmangary_ce07.R;
 // DetailsFragment
 
 public class DetailsFragment extends Fragment {
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -30,6 +39,21 @@ public class DetailsFragment extends Fragment {
         TextView makeLabel = (TextView) view.findViewById(R.id.makeTextView);
         TextView modelLabel = (TextView) view.findViewById(R.id.modelTextView);
         TextView yearLabel = (TextView) view.findViewById(R.id.yearTextView);
-        String text = yearLabel.getText().toString();
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.detail_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if (item.getItemId() == R.id.deleteAction) {
+
+            return true;
+        } else return super.onOptionsItemSelected(item);
     }
 }

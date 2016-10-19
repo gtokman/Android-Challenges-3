@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+              android:orientation="horizontal"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
               android:id="@+id/listItem">
 
     <TextView
         android:text="TextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/personName"
         android:textSize="18sp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:id="@+id/carMakeItem"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/modelItem"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:layout_weight="1"
+        android:layout_margin="4dp"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/carYearItem"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:layout_weight="1"
+        android:layout_margin="4dp"/>
 </LinearLayout>

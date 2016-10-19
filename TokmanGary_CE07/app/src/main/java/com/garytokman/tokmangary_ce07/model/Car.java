@@ -31,4 +31,8 @@ public class Car {
         return String.valueOf(mYear);
     }
 
+    @Override
+    public String toString() {
+        return mMake + " " + mModel + " " + mYear;
+    }
 }
