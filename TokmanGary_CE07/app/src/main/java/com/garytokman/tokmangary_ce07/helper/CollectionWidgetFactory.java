@@ -1,13 +1,17 @@
 package com.garytokman.tokmangary_ce07.helper;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import com.garytokman.tokmangary_ce07.R;
+import com.garytokman.tokmangary_ce07.database.CarDatabase;
+import com.garytokman.tokmangary_ce07.fragment.CarListFragment;
 import com.garytokman.tokmangary_ce07.model.Car;
-
-import java.util.ArrayList;
-import java.util.List;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -15,49 +19,67 @@ import java.util.List;
 
 public class CollectionWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
+    private static final String TAG = CollectionWidgetFactory.class.getSimpleName();
     private Context mContext;
-    private List<Car> mCars;
+    private Cursor mCursor;
+    private int mWidgetId;
 
-    public CollectionWidgetFactory(Context context) {
+    public CollectionWidgetFactory(Context context, Intent intent) {
         mContext = context;
-        mCars = new ArrayList<>();
+        mWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        
     }
 
     @Override
     public void onCreate() {
-
+        Log.d(TAG, "onCreate: ");
 
     }
 
     @Override
     public void onDataSetChanged() {
-        // Add new data and reload the list // Appwidget manager class
+        Log.d(TAG, "onDataSetChanged: ");
+
+        mCursor = CarDatabase.getInstance(mContext).getCars();
+//        // Add new data and reload the list // Appwidget manager class
+//        AppWidgetManager manager = AppWidgetManager.getInstance(mContext);
+//        manager.notifyAppWidgetViewDataChanged(mWidgetId, R.id.listView);
     }
 
     @Override
-    public void onDestroy() {}
+    public void onDestroy() {
+        if (mCursor != null) {
+            mCursor.close();
+        }
+    }
 
     @Override
     public int getCount() {
-        return 0;
+        return mCursor.getCount();
     }
 
     @Override
     public RemoteViews getViewAt(int i) {
-//
-//        RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.list_item);
-//
-//        Person person = mPersons.get(i);
-//
-//        remoteViews.setTextViewText(R.id.personName, person.mName);
-//
-//        // Fill in intent
-//        Intent intent = new Intent();
-//        intent.putExtra(MainActivity.EXTRA_PERSON, person);
-//        remoteViews.setOnClickFillInIntent(R.id.listItem, intent);
-//
-//        return remoteViews;
-        return null;
+        Log.d(TAG, "getViewAt: ");
+        // Get cursor to set data source
+
+        CursorHelper cursorHelper = new CursorHelper(mCursor);
+        Car car = cursorHelper.getCar(i);
+
+
+        // Create remote views
+        RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.list_item);
+
+        remoteViews.setTextViewText(R.id.carMakeItem, car.getMake());
+        remoteViews.setTextViewText(R.id.modelItem, car.getModel());
+        remoteViews.setTextViewText(R.id.carYearItem, car.getYearString());
+
+        // Fill in intent
+        Intent intent = new Intent();
+        intent.putExtra(CarListFragment.EXTRA_CAR, car);
+        remoteViews.setOnClickFillInIntent(R.id.listItem, intent);
+
+        return remoteViews;
     }
 
     @Override
@@ -67,7 +89,7 @@ public class CollectionWidgetFactory implements RemoteViewsService.RemoteViewsFa
 
     @Override
     public int getViewTypeCount() {
-        return mCars.size();
+        return 1;
     }
 
     @Override

@@ -15,11 +15,14 @@ public class CursorHelper extends CursorWrapper {
         super(cursor);
     }
 
-    public Car getCar() {
-        String make = getString(getColumnIndex(Columns.CAR_MAKE));
-        String model = getString(getColumnIndex(Columns.CAR_MODEL));
-        int year = getInt(getColumnIndex(Columns.YEAR));
+    public Car getCar(int postion) {
+        if (moveToPosition(postion)) {
 
-        return new Car(make, model, year);
+            String make = getString(getColumnIndex(Columns.CAR_MAKE));
+            String model = getString(getColumnIndex(Columns.CAR_MODEL));
+            int year = getInt(getColumnIndex(Columns.YEAR));
+            return new Car(make, model, year);
+        }
+        return null;
     }
 }

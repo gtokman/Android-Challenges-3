@@ -1,6 +1,8 @@
 package com.garytokman.tokmangary_ce07.fragment;
 
 import android.app.Fragment;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,7 +15,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.garytokman.tokmangary_ce07.R;
+import com.garytokman.tokmangary_ce07.database.CarDatabase;
+import com.garytokman.tokmangary_ce07.database.DatabaseSchema.CarTable.Columns;
 import com.garytokman.tokmangary_ce07.model.Car;
+import com.garytokman.tokmangary_ce07.provider.CollectionProvider;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -66,8 +71,17 @@ public class DetailsFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.deleteAction) {
+            // Delete
+            String where = Columns.CAR_MAKE + " =? and " + Columns.CAR_MODEL + " =? and " + Columns.YEAR + " =?";
+            String[] whereArgs = {mCar.getMake(), mCar.getModel(), mCar.getYearString()};
+            CarDatabase.getInstance(getActivity()).deleteCar(where, whereArgs);
 
-//            CarDatabase.getInstance(getActivity()).deleteCar();
+
+            AppWidgetManager manager = AppWidgetManager.getInstance(getActivity());
+            int[] widgetIds = manager.getAppWidgetIds(new ComponentName(getActivity(), CollectionProvider.class));
+            manager.notifyAppWidgetViewDataChanged(widgetIds, R.id.listView);
+
+
             getActivity().finish();
 
             return true;

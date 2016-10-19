@@ -1,6 +1,9 @@
 package com.garytokman.tokmangary_ce07.fragment;
 
 import android.app.Fragment;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -15,6 +18,7 @@ import android.widget.EditText;
 import com.garytokman.tokmangary_ce07.R;
 import com.garytokman.tokmangary_ce07.database.CarDatabase;
 import com.garytokman.tokmangary_ce07.model.Car;
+import com.garytokman.tokmangary_ce07.provider.CollectionProvider;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -26,6 +30,7 @@ public class FormFragment extends Fragment {
     private EditText mMakeEditText;
     private EditText mModelEditText;
     private EditText mYearEditText;
+    private int mWidgetId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,9 @@ public class FormFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        Intent intent = getActivity().getIntent();
+        mWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
         mMakeEditText = (EditText) view.findViewById(R.id.makeEditText);
         mModelEditText = (EditText) view.findViewById(R.id.modelEditText);
@@ -67,6 +75,11 @@ public class FormFragment extends Fragment {
             Car car = new Car(getText(mMakeEditText), getText(mModelEditText), Integer.valueOf(getText(mYearEditText)));
             Log.d(TAG, "onOptionsItemSelected: " + car.toString());
             CarDatabase.getInstance(getActivity()).saveCar(car);
+
+            AppWidgetManager manager = AppWidgetManager.getInstance(getActivity());
+            int[] widgetIds = manager.getAppWidgetIds(new ComponentName(getActivity(), CollectionProvider.class));
+            manager.notifyAppWidgetViewDataChanged(widgetIds, R.id.listView);
+
             getActivity().finish();
 
             return true;

@@ -68,7 +68,7 @@ public class CarListFragment extends ListFragment {
 
         Cursor carCursor = (Cursor) l.getAdapter().getItem(position);
         CursorHelper helper = new CursorHelper(carCursor);
-        Car car = helper.getCar();
+        Car car = helper.getCar(position);
 
         // Open detail
         Intent intent = new Intent(getActivity(), DetailActivity.class);

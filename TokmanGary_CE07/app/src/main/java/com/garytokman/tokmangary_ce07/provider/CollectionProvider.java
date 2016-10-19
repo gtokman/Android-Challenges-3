@@ -22,22 +22,28 @@ public class CollectionProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        // Create remote views
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
+        for (int appWidgetId : appWidgetIds) {
 
-        // Start service that returns the remote view factory
-        Intent serviceIntent = new Intent(context, CollectionWidgetService.class);
 
-        // Set
-        remoteViews.setRemoteAdapter(R.id.listView, serviceIntent);
-        remoteViews.setEmptyView(R.id.listView, R.id.emptyText);
+            // Create remote views
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
-        // If empty list so text TODO: Make show detail
-        remoteViews.setPendingIntentTemplate(R.id.listView, getPendingIntent(context, DetailActivity.class));
-        remoteViews.setOnClickPendingIntent(R.id.formButton, getPendingIntent(context, FormActivity.class));
+            // Start service that returns the remote view factory
+            Intent serviceIntent = new Intent(context, CollectionWidgetService.class);
+            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
-        // Update widget
-        appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+            // Set
+            remoteViews.setRemoteAdapter(R.id.listView, serviceIntent);
+            remoteViews.setEmptyView(R.id.listView, R.id.emptyText);
+
+            // If empty list so text TODO: Make show detail
+            remoteViews.setPendingIntentTemplate(R.id.listView, getPendingIntent(context, DetailActivity.class));
+            remoteViews.setOnClickPendingIntent(R.id.formButton, getPendingIntent(context, FormActivity.class));
+
+            // Update widget
+            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
+        }
+
 
     }
 
