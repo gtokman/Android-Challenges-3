@@ -22,15 +22,11 @@ public class CollectionProvider extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
 
-        for (int appWidgetId : appWidgetIds) {
-
-
             // Create remote views
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
 
             // Start service that returns the remote view factory
             Intent serviceIntent = new Intent(context, CollectionWidgetService.class);
-            serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
             // Set
             remoteViews.setRemoteAdapter(R.id.listView, serviceIntent);
@@ -41,10 +37,7 @@ public class CollectionProvider extends AppWidgetProvider {
             remoteViews.setOnClickPendingIntent(R.id.formButton, getPendingIntent(context, FormActivity.class));
 
             // Update widget
-            appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
-        }
-
-
+            appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
     }
 
     private PendingIntent getPendingIntent(Context context, Class<?> activity) {

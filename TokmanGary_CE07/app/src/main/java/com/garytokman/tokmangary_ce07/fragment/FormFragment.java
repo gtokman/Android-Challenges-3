@@ -3,7 +3,6 @@ package com.garytokman.tokmangary_ce07.fragment;
 import android.app.Fragment;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -14,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.garytokman.tokmangary_ce07.R;
 import com.garytokman.tokmangary_ce07.database.CarDatabase;
@@ -30,7 +30,6 @@ public class FormFragment extends Fragment {
     private EditText mMakeEditText;
     private EditText mModelEditText;
     private EditText mYearEditText;
-    private int mWidgetId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,9 +46,6 @@ public class FormFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        Intent intent = getActivity().getIntent();
-        mWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
 
         mMakeEditText = (EditText) view.findViewById(R.id.makeEditText);
         mModelEditText = (EditText) view.findViewById(R.id.modelEditText);
@@ -68,6 +64,7 @@ public class FormFragment extends Fragment {
 
             // Check if text fields are valid
             if (isEmptyText(mMakeEditText) || isEmptyText(mModelEditText) || isEmptyText(mYearEditText)) {
+                Toast.makeText(getActivity(), "No empty text!", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -76,6 +73,7 @@ public class FormFragment extends Fragment {
             Log.d(TAG, "onOptionsItemSelected: " + car.toString());
             CarDatabase.getInstance(getActivity()).saveCar(car);
 
+            // Update list, notify sends callback to onDataSetChanged
             AppWidgetManager manager = AppWidgetManager.getInstance(getActivity());
             int[] widgetIds = manager.getAppWidgetIds(new ComponentName(getActivity(), CollectionProvider.class));
             manager.notifyAppWidgetViewDataChanged(widgetIds, R.id.listView);

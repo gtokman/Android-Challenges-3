@@ -6,6 +6,10 @@ import android.os.Bundle;
 import com.garytokman.tokmangary_ce07.R;
 import com.garytokman.tokmangary_ce07.fragment.DetailsFragment;
 
+// Gary Tokman
+// MDF3 - 1610
+// DetailActivity
+
 public class DetailActivity extends AppCompatActivity {
 
     private static final String DETAIL_FRAGMENT = "DETAIL_FRAGMENT";

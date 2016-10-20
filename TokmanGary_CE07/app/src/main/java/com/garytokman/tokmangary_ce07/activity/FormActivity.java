@@ -6,6 +6,10 @@ import android.os.Bundle;
 import com.garytokman.tokmangary_ce07.fragment.FormFragment;
 import com.garytokman.tokmangary_ce07.R;
 
+// Gary Tokman
+// MDF3 - 1610
+// FormActivity
+
 public class FormActivity extends AppCompatActivity {
 
     private static final String FORM_FRAGMENT = "FORM_FRAGMENT";

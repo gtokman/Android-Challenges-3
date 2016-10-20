@@ -7,9 +7,9 @@ import java.io.Serializable;
 
 public class Car implements Serializable {
 
-    private String mMake;
-    private String mModel;
-    private int mYear;
+    private final String mMake;
+    private final String mModel;
+    private final int mYear;
 
     public Car(String make, String model, int year) {
         mMake = make;

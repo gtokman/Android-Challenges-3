@@ -12,6 +12,6 @@ import com.garytokman.tokmangary_ce07.helper.CollectionWidgetFactory;
 public class CollectionWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new CollectionWidgetFactory(getApplicationContext(), intent);
+        return new CollectionWidgetFactory(getApplicationContext());
     }
 }

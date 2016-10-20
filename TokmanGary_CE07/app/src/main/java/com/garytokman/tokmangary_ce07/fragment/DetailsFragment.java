@@ -76,7 +76,7 @@ public class DetailsFragment extends Fragment {
             String[] whereArgs = {mCar.getMake(), mCar.getModel(), mCar.getYearString()};
             CarDatabase.getInstance(getActivity()).deleteCar(where, whereArgs);
 
-
+            // Update list, notify sends callback to onDataSetChanged
             AppWidgetManager manager = AppWidgetManager.getInstance(getActivity());
             int[] widgetIds = manager.getAppWidgetIds(new ComponentName(getActivity(), CollectionProvider.class));
             manager.notifyAppWidgetViewDataChanged(widgetIds, R.id.listView);

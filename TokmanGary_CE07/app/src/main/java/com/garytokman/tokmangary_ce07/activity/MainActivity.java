@@ -6,6 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.garytokman.tokmangary_ce07.R;
 import com.garytokman.tokmangary_ce07.fragment.CarListFragment;
 
+// Gary Tokman
+// MDF3 - 1610
+// MainActivity
+
 public class MainActivity extends AppCompatActivity {
 
     @Override

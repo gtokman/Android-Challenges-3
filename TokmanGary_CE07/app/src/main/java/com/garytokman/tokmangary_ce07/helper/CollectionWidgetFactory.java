@@ -1,6 +1,5 @@
 package com.garytokman.tokmangary_ce07.helper;
 
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,14 +19,11 @@ import com.garytokman.tokmangary_ce07.model.Car;
 public class CollectionWidgetFactory implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = CollectionWidgetFactory.class.getSimpleName();
-    private Context mContext;
+    private final Context mContext;
     private Cursor mCursor;
-    private int mWidgetId;
 
-    public CollectionWidgetFactory(Context context, Intent intent) {
+    public CollectionWidgetFactory(Context context) {
         mContext = context;
-        mWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        
     }
 
     @Override
@@ -40,10 +36,8 @@ public class CollectionWidgetFactory implements RemoteViewsService.RemoteViewsFa
     public void onDataSetChanged() {
         Log.d(TAG, "onDataSetChanged: ");
 
+        // Update data source
         mCursor = CarDatabase.getInstance(mContext).getCars();
-//        // Add new data and reload the list // Appwidget manager class
-//        AppWidgetManager manager = AppWidgetManager.getInstance(mContext);
-//        manager.notifyAppWidgetViewDataChanged(mWidgetId, R.id.listView);
     }
 
     @Override
@@ -65,7 +59,6 @@ public class CollectionWidgetFactory implements RemoteViewsService.RemoteViewsFa
 
         CursorHelper cursorHelper = new CursorHelper(mCursor);
         Car car = cursorHelper.getCar(i);
-
 
         // Create remote views
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.list_item);
