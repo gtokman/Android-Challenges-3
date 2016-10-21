@@ -1,17 +1,17 @@
 package com.garytokman.tokmangary_ce04.model;
 // Gary Tokman
 // MDF3 - 1610
-// TokmanGary_CE04
+// Photo
 
 import java.io.Serializable;
 
 public class Photo implements Serializable {
 
-    private String mPhotoDesc;
-    private String mPhotoName;
-    private String mPhotoUri;
-    private double mLat;
-    private double mLong;
+    private final String mPhotoDesc;
+    private final String mPhotoName;
+    private final String mPhotoUri;
+    private final double mLat;
+    private final double mLong;
 
     public Photo(String photoDesc, String photoName, String photoUri, double lat, double aLong) {
         mPhotoDesc = photoDesc;

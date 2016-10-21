@@ -17,7 +17,7 @@
         android:textStyle="normal|bold"/>
 
     <TextView
-        android:text="markerLocation"
+        android:text="Add new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/markerLocation"

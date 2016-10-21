@@ -107,7 +107,7 @@ public class FormFragment extends Fragment {
         } else return super.onOptionsItemSelected(item);
     }
 
-    public File getPhotoFile() {
+    private File getPhotoFile() {
         File externalFilesDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         if (externalFilesDir == null) {
@@ -117,7 +117,7 @@ public class FormFragment extends Fragment {
         return new File(externalFilesDir, getPhotoName());
     }
 
-    public String getPhotoName() {
+    private String getPhotoName() {
         return "img_" + System.currentTimeMillis() + ".jpg";
     }
 

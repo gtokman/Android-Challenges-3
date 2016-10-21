@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String MAP_FRAGMENT = "MAP_FRAGMENT";
     private static final int REQUEST_CODE = 123;
-    private static final String TAG  = MainActivity.class.getSimpleName();
-    private PhotoMapFragment mMapFragment;
 
 
     @Override
@@ -52,10 +50,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addFragment() {
-        mMapFragment = new PhotoMapFragment();
+        PhotoMapFragment mapFragment = new PhotoMapFragment();
         getFragmentManager()
                 .beginTransaction()
-                .add(R.id.container, mMapFragment, MAP_FRAGMENT)
+                .add(R.id.container, mapFragment, MAP_FRAGMENT)
                 .commit();
     }
 

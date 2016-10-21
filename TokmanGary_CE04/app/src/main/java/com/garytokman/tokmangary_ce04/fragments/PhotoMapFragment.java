@@ -37,7 +37,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // Gary Tokman
 // MDF3 - 1610
@@ -53,17 +55,18 @@ public class PhotoMapFragment extends MapFragment implements OnMapReadyCallback,
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
     private LatLng mLatLng;
-    private List<Photo> mPhotos;
-    private Marker mMarker;
     private MenuItem mItem;
+    private final Map<String, Photo> mPhotoMap = new HashMap<>();
 
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setHasOptionsMenu(true);
 
+        // Set call back
         getMapAsync(this);
 
+        // Init
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -72,15 +75,8 @@ public class PhotoMapFragment extends MapFragment implements OnMapReadyCallback,
 
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-                .setInterval(10 * 1000)        // 10 seconds, in milliseconds
-                .setFastestInterval(1 * 1000);
-
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+                .setInterval(10 * 1000)
+                .setFastestInterval(1000);
     }
 
     @Override
@@ -113,6 +109,7 @@ public class PhotoMapFragment extends MapFragment implements OnMapReadyCallback,
         mGoogleMap.setOnMapLongClickListener(this);
         mGoogleMap.setOnInfoWindowClickListener(this);
         mGoogleMap.setInfoWindowAdapter(this);
+        updateMap();
     }
 
     @Override
@@ -120,6 +117,10 @@ public class PhotoMapFragment extends MapFragment implements OnMapReadyCallback,
         super.onResume();
         mGoogleApiClient.connect();
 
+        updateMap();
+    }
+
+    private void updateMap() {
         if (mGoogleMap != null) {
 
             // Clear all markers
@@ -128,20 +129,19 @@ public class PhotoMapFragment extends MapFragment implements OnMapReadyCallback,
             // Load saved data
             Cursor photoCursor = PhotoDatabase.getInstance(getActivity()).getPhotos();
             CursorHelper cursorHelper = new CursorHelper(photoCursor);
-            mPhotos = cursorHelper.getPhotos();
+            List<Photo> photos = cursorHelper.getPhotos();
 
             // Show a single map marker for each data record saved
             // markers should be placed on the map using the latitude and longitude
-            for (final Photo photo : mPhotos) {
-                Log.d(TAG, "onResume: " + photo.getPhotoName());
+            for (final Photo photo : photos) {
                 // Set marker
                 LatLng latLng = new LatLng(photo.getLat(), photo.getLong());
                 MarkerOptions options = new MarkerOptions()
                         .position(latLng)
-                        .title("Current location");
+                        .title(photo.getPhotoName());
                 mGoogleMap.addMarker(options);
-                mMarker = mGoogleMap.addMarker(options);
-                mMarker.setTag(photo);
+                mGoogleMap.addMarker(options);
+                mPhotoMap.put(mGoogleMap.addMarker(options).getTitle(), photo);
 
                 Log.d(TAG, "onResume: " + mGoogleMap.addMarker(options).getTag());
             }
@@ -187,10 +187,12 @@ public class PhotoMapFragment extends MapFragment implements OnMapReadyCallback,
 
         // Set marker
         MarkerOptions options = new MarkerOptions()
-                .position(mLatLng)
-                .title("Current location");
+                .position(mLatLng);
         mGoogleMap.addMarker(options);
         mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(mLatLng, 15));
+
+        // Stop receiving updates
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     @Override
@@ -227,8 +229,9 @@ public class PhotoMapFragment extends MapFragment implements OnMapReadyCallback,
         TextView markerPhotoName = (TextView) view.findViewById(R.id.photoName);
         ImageView imageView = (ImageView) view.findViewById(R.id.markerImage);
 
-        Log.d(TAG, "getInfoContents: " + marker.getTag());
-        Photo photo = (Photo) mMarker.getTag();
+        Log.d(TAG, "getInfoContents: " + marker.getTitle());
+        Photo photo = mPhotoMap.get(marker.getTitle());
+
 
         if (photo != null) {
             markerLocation.setText(photo.getPhotoDesc());
@@ -242,14 +245,13 @@ public class PhotoMapFragment extends MapFragment implements OnMapReadyCallback,
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Photo photo = (Photo) mMarker.getTag();
+        Photo photo = mPhotoMap.get(marker.getTitle());
         if (photo != null) {
 
             Intent intent = new Intent(getActivity(), DetailActivity.class);
             intent.putExtra(DetailFragment.EXTRA_PHOTO, photo);
             startActivity(intent);
         }
-
     }
 
     @Override
