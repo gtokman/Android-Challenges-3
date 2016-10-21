@@ -19,6 +19,8 @@ public class FormActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form);
 
+        setTitle("Photo Form");
+
         getFragmentManager()
                 .beginTransaction()
                 .add(R.id.formContainer, new FormFragment(), FORM_FRAGMENT)

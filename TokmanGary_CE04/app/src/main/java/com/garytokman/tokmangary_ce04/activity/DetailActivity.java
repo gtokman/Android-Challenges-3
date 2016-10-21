@@ -19,6 +19,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        setTitle("Photo Details");
+
         getFragmentManager()
                 .beginTransaction()
                 .add(R.id.detailContainer, new DetailFragment(), DETAIL_FRAGMENT)

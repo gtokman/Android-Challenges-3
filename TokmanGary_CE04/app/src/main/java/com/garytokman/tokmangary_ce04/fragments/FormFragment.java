@@ -22,6 +22,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.garytokman.tokmangary_ce04.R;
+import com.garytokman.tokmangary_ce04.database.PhotoDatabase;
+import com.garytokman.tokmangary_ce04.model.Photo;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.File;
 
@@ -57,6 +60,8 @@ public class FormFragment extends Fragment {
 
         // Init
         mImageView = (ImageView) view.findViewById(R.id.cameraImageView);
+        mImageNameText = (EditText) view.findViewById(R.id.name_input);
+        mLocationText = (EditText) view.findViewById(R.id.location_input);
     }
 
     @Override
@@ -68,16 +73,24 @@ public class FormFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        Intent intent = getActivity().getIntent();
+        LatLng latLng = intent.getParcelableExtra(PhotoMapFragment.EXTRA_LOCATION);
+
         if (item.getItemId() == R.id.saveAction) {
 
             // Check if text fields are valid
-            if (isEmptyText(mLocationText) || isEmptyText(mImageNameText) || mImageView == null) {
+            if (isEmptyText(mLocationText) || isEmptyText(mImageNameText)) {
                 Toast.makeText(getActivity(), "No empty fields!", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
-
             // TODO: SAVE
+            Photo photo = new Photo(getText(mLocationText),
+                    getText(mImageNameText), mPhotoFile.getPath(),
+                    latLng.latitude, latLng.longitude);
+
+            PhotoDatabase.getInstance(getActivity()).savePhoto(photo);
+            getActivity().finish();
 
             return true;
         } else if (item.getItemId() == R.id.cameraAction) {

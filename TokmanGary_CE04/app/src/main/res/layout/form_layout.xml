@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:layout_width="match_parent"
@@ -15,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="location name"
-            android:id="@+id/firstInput"
+            android:id="@+id/location_input"
             android:maxLines="1"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -27,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="photo name"
-            android:id="@+id/secondInput"/>
+            android:id="@+id/name_input"/>
     </android.support.design.widget.TextInputLayout>
 
     <ImageView

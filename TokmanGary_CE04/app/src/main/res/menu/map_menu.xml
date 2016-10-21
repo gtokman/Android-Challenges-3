@@ -5,7 +5,7 @@
     <item android:title="Add"
           android:id="@+id/addAction"
           android:visible="true"
-          android:enabled="true"
+          android:enabled="false"
           app:showAsAction="ifRoom"
           android:icon="@android:drawable/ic_menu_add"/>
 </menu>
