@@ -22,6 +22,18 @@
             </intent-filter>
         </activity>
 
+        <!--Vote History Act-->
+        <activity android:name=".VotingHistoryActivity"
+            android:label="Vote History">
+
+        </activity>
+
+        <!--Vote Info Act-->
+        <activity android:name=".VoteInfoActivity"
+            android:label="Vote Info">
+
+        </activity>
+
         <!-- TODO: Register everything in the manifest. -->
 
         <!--Saver service-->

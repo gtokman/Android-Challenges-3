@@ -21,7 +21,6 @@ public class VoteInfoHelper {
 		}
 		
 		try {
-			// TODO: Add politician ID to end of URL for validity.
 			String urlString = "https://www.govtrack.us/api/v2/vote_voter/?limit=100" +
 						"&order_by=created&fields=vote__id,created,option__value,vote__category," +
 						"vote__chamber,vote__question,vote__number&person=";

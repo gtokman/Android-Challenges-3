@@ -47,7 +47,7 @@ public class VotingHistoryActivity extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if(item.getItemId() == R.id.menu_save) {
 			Intent intent = new Intent(this, FavoriteSaverService.class);
-			// TODO: What is being saved?
+			intent.putExtra(FavoriteSaverService.EXTRA_POLITICIAN, mPolitician);
 			startService(intent);
 		}
 		return super.onOptionsItemSelected(item);

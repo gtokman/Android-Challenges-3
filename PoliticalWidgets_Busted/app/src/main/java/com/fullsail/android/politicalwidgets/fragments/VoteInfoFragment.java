@@ -76,6 +76,10 @@ public class VoteInfoFragment extends Fragment {
 	
 	private void updateUI(Vote vote) {
 		View root = getView();
+
+		if(root == null) {
+			return;
+		}
 		
 		TextView tv = (TextView)root.findViewById(R.id.chamber);
 		tv.setText(vote.chamber);
@@ -86,11 +90,10 @@ public class VoteInfoFragment extends Fragment {
 		tv = (TextView)root.findViewById(R.id.session);
 		tv.setText(vote.session);
 		
-		tv = (TextView)root.findViewById(R.id.description);
+		tv = (TextView)root.findViewById(R.id.outcome);
 		tv.setText(vote.outcome);
 	}
 
-	// TODO: Fix class declaration to have proper return type.
 	private class VoteLoaderTask extends AsyncTask<Integer, Void, Vote> {
 		
 		@Override

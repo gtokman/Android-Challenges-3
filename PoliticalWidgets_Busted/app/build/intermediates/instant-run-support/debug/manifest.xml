@@ -26,6 +26,18 @@
             </intent-filter>
         </activity>
 
+        <!-- Vote History Act -->
+        <activity
+            android:name="com.fullsail.android.politicalwidgets.VotingHistoryActivity"
+            android:label="Vote History" >
+        </activity>
+
+        <!-- Vote Info Act -->
+        <activity
+            android:name="com.fullsail.android.politicalwidgets.VoteInfoActivity"
+            android:label="Vote Info" >
+        </activity>
+
         <!-- TODO: Register everything in the manifest. -->
 
 

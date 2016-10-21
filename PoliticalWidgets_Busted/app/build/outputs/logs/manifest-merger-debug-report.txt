@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:2:1-32:12
+ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:2:1-44:12
 	package
 		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:3:5-52
 		INJECTED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml
@@ -16,7 +16,7 @@ ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Bus
 	android:name
 		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:7:22-76
 application
-ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:9:5-30:19
+ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:9:5-42:19
 	android:label
 		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:12:9-41
 	android:allowBackup
@@ -41,10 +41,22 @@ category#android.intent.category.LAUNCHER
 ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:21:17-77
 	android:name
 		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:21:27-74
-service#com.fullsail.android.politicalwidgets.FavoriteSaverService
-ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:28:9-56
+activity#com.fullsail.android.politicalwidgets.VotingHistoryActivity
+ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:26:9-29:20
+	android:label
+		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:27:13-41
 	android:name
-		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:28:18-54
+		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:26:19-56
+activity#com.fullsail.android.politicalwidgets.VoteInfoActivity
+ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:32:9-35:20
+	android:label
+		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:33:13-38
+	android:name
+		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:32:19-51
+service#com.fullsail.android.politicalwidgets.FavoriteSaverService
+ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:40:9-56
+	android:name
+		ADDED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml:40:18-54
 uses-sdk
 INJECTED from /Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 	android:targetSdkVersion

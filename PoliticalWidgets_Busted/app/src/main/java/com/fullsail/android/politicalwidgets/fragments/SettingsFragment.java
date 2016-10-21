@@ -85,7 +85,7 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 		
 		Intent result = new Intent();
 		result.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mWidgetId);
-		getActivity().setResult(Activity.RESULT_CANCELED, result);
+		getActivity().setResult(Activity.RESULT_OK, result);
 		getActivity().finish();
 	}
 }

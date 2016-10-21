@@ -89,5 +89,8 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 	@Override
 	public void politicianSelected(Politician p) {
 		Log.d(TAG, "politicianSelected: " + p.toString());
+		Intent intent = new Intent(this, VotingHistoryActivity.class);
+		intent.putExtra(VotingHistoryActivity.EXTRA_POLITICIAN, p);
+		startActivity(intent);
 	}
 }
