@@ -1,0 +1,7 @@
+#Fri Oct 21 12:18:11 EDT 2016
+base.0=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_5af7f1fbef9154be7ec68c953d546a8ba218a2c3
+renamed.1=classes2.dex
+renamed.0=classes.dex
+file.1=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_4cb4fa6797872bf922f167328474dcfa1c3451b5/classes.dex
+base.1=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_4cb4fa6797872bf922f167328474dcfa1c3451b5
+file.0=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_5af7f1fbef9154be7ec68c953d546a8ba218a2c3/classes.dex

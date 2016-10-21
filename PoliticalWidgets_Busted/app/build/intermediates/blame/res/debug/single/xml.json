@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/merged/debug/xml/vote_history_widget_info.xml",
+        "source": "/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/res/xml/vote_history_widget_info.xml"
+    },
+    {
+        "merged": "/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/merged/debug/xml/politician_widget_info.xml",
+        "source": "/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/src/main/res/xml/politician_widget_info.xml"
+    }
+]
