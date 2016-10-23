@@ -3,11 +3,20 @@
 
     <item
         is-multidex="true"
+        jar="/Applications/Android Studio.app/Contents/gradle/m2repository/commons-io/commons-io/2.4/commons-io-2.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.2"
+        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad">
+        <dex dex="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/10/commons-io-2.4_db9d9c7f5dc9abc44c05f9a56b43532b2a4af315/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="23.0.2"
-        sha1="0d26a0b62dcc93c7753f45773c8c9a9af15921f8">
+        sha1="fd711dd5fa9052868574d76cacd34bcc05090059">
         <dex dex="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_5af7f1fbef9154be7ec68c953d546a8ba218a2c3/classes.dex" />
     </item>
     <item
@@ -16,17 +25,8 @@
         jumboMode="true"
         optimize="true"
         revision="23.0.2"
-        sha1="70e6469b1a6d7b4048ea498d9a4c22df23c57c30">
+        sha1="cba00c7e3cd40d2fc70fc2193b75abb305a35c50">
         <dex dex="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_4cb4fa6797872bf922f167328474dcfa1c3451b5/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Applications/Android Studio.app/Contents/gradle/m2repository/commons-io/commons-io/2.4/commons-io-2.4.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="23.0.2"
-        sha1="b1b6ea3b7e4aa4f492509a4952029cd8e48019ad">
-        <dex dex="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/10/commons-io-2.4_db9d9c7f5dc9abc44c05f9a56b43532b2a4af315/classes.dex" />
     </item>
 
 </items>

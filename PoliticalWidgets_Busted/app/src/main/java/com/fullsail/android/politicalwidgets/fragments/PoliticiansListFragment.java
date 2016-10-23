@@ -27,7 +27,7 @@ public class PoliticiansListFragment extends ListFragment {
 	public static final int FILTER_FAVORITES = 0x01002;
 	public static final String TAG = "PoliticiansListFragment";
 
-	private static final int REQUEST_VOTING_HISTORY = 0x02001;
+	public static final int REQUEST_VOTING_HISTORY = 0x02001;
 	
 	public static PoliticiansListFragment newInstance(int filter) {
 		PoliticiansListFragment frag = new PoliticiansListFragment();

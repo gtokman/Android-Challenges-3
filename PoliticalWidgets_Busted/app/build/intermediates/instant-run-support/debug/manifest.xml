@@ -38,11 +38,60 @@
             android:label="Vote Info" >
         </activity>
 
-        <!-- TODO: Register everything in the manifest. -->
+        <!-- Config act -->
+        <activity
+            android:name="com.fullsail.android.politicalwidgets.widgets.PoliticianWidgetConfigureActivity"
+            android:label="Configure" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.fullsail.android.politicalwidgets.widgets.VoteHistoryWidgetConfigureActivity"
+            android:label="Configure" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
 
+        <!-- Pol widget -->
+        <receiver
+            android:name="com.fullsail.android.politicalwidgets.widgets.PoliticianWidget"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/politician_widget_info" />
+        </receiver>
+
+        <!-- Vote widget -->
+
+        <receiver android:name="com.fullsail.android.politicalwidgets.widgets.VoteHistoryWidget" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/vote_history_widget_info" />
+        </receiver>
 
         <!-- Saver service -->
         <service android:name="com.fullsail.android.politicalwidgets.FavoriteSaverService" />
+        <service
+            android:name="com.fullsail.android.politicalwidgets.widgets.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver
+            android:name="com.fullsail.android.politicalwidgets.WidgetUpdater"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.fullsail.android.politicalwidgets.ACTION_UPDATE_WIDGETS" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -1,11 +1,11 @@
 package com.fullsail.android.politicalwidgets.widgets;
 
-import com.fullsail.android.politicalwidgets.widgets.factory.PoliticianViewFactory;
-import com.fullsail.android.politicalwidgets.widgets.factory.VoteHistoryViewFactory;
-
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.widget.RemoteViewsService;
+
+import com.fullsail.android.politicalwidgets.widgets.factory.PoliticianViewFactory;
+import com.fullsail.android.politicalwidgets.widgets.factory.VoteHistoryViewFactory;
 
 public class ListWidgetService extends RemoteViewsService {
 	
@@ -33,9 +33,9 @@ public class ListWidgetService extends RemoteViewsService {
 		}
 		
 		if(type == TYPE_VOTE_HISTORY) {
-			return new PoliticianViewFactory(getApplicationContext(), widgetId);
-		} else if(type == TYPE_POLITICIAN) {
 			return new VoteHistoryViewFactory(getApplicationContext(), widgetId);
+		} else if(type == TYPE_POLITICIAN) {
+			return new PoliticianViewFactory(getApplicationContext(), widgetId);
 		}
 		
 		return null;

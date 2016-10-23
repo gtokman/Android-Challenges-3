@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Oct 21 12:18:11 EDT 2016
+#Sat Oct 22 20:34:58 EDT 2016
 8.set=ANDROID_RESOURCE
 1.base=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_
 1.file=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_/res/xml/politician_widget_info.xml
@@ -20,9 +20,9 @@
 3.set=ANDROID_RESOURCE
 10.set=ANDROID_RESOURCE
 0.base=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_
-0.file=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_/res/layout/vote_info_list_item.xml
+0.file=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_/res/menu/main.xml
 6.set=ANDROID_RESOURCE
-2.file=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_/res/menu/main.xml
+2.file=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_/res/layout/vote_info_list_item.xml
 2.base=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_
 4.file=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_/res/layout/activity_main.xml
 4.base=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/res/resources-debug.ap_

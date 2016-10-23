@@ -48,11 +48,12 @@ public class VoteHistoryWidgetConfigureActivity extends Activity implements Poli
 	@Override
 	public void politicianSelected(Politician p) {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		prefs.edit().putInt("Widget" + mWidgetId, p.getId()).commit();
+		prefs.edit().putInt("Widget" + mWidgetId, p.getId()).apply();
 		
 		Intent intent = new Intent(this, ListWidgetService.class);
 	    intent.setData(Uri.fromParts("content", String.valueOf(mWidgetId), null)); // Leave this line alone.
 		intent.putExtra(ListWidgetService.EXTRA_TYPE, ListWidgetService.TYPE_VOTE_HISTORY);
+		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mWidgetId);
 		
 		RemoteViews rv = new RemoteViews(getApplicationContext().getPackageName(), R.layout.list_widget_layout);
 		rv.setRemoteAdapter(R.id.list, intent);

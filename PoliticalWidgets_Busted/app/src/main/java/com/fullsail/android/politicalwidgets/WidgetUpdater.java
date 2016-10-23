@@ -17,7 +17,7 @@ public class WidgetUpdater extends BroadcastReceiver {
 		if(intent.getAction().equals(ACTION_UPDATE_WIDGETS)) {
 			AppWidgetManager mgr = AppWidgetManager.getInstance(context);
 			int[] ids = mgr.getAppWidgetIds(new ComponentName(context, PoliticianWidget.class));
-			// TODO: Tell politician widgets to update their data.
+			mgr.notifyAppWidgetViewDataChanged(ids, R.id.list);
 		}
 	}
 }

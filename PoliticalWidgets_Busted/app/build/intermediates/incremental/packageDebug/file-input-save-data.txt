@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Oct 21 12:18:12 EDT 2016
+#Sat Oct 22 20:35:04 EDT 2016
 25.file=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/mergeJavaRes/debug/jars/2/1f/main.jar/META-INF/LICENSE
 25.base=/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/mergeJavaRes/debug/jars/2/1f/main.jar
 22.set=DEX

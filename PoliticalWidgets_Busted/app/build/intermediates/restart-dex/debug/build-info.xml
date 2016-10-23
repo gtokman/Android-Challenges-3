@@ -4,47 +4,33 @@
     density="420dpi"
     format="8"
     plugin-version="2.2.0"
-    timestamp="13274990698969"
+    timestamp="63602710617015"
     token="5540119255728731177"
-    verifier="COLD_SWAP_REQUESTED" >
+    verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="267" />
+        duration="251" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="44" />
+        duration="58" />
     <task
         name="verifier"
-        duration="14" />
+        duration="164" />
 
     <artifact
-        location="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_6/classes.dex"
-        type="DEX" />
+        location="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/outputs/apk/app-debug.apk"
+        type="MAIN" />
 
     <build
-        timestamp="12368452876829"
+        timestamp="63602710617015"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/outputs/apk/app-debug.apk"
             type="MAIN" />
-    </build>
-    <build
-        timestamp="13035091564104"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_4/classes.dex"
-            type="DEX" />
-    </build>
-    <build
-        timestamp="13274990698969"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="/Users/gtokman1/AndroidStudioProjects/Java-3/Lab/PoliticalWidgets_Busted/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_6/classes.dex"
-            type="DEX" />
     </build>
 
 </instant-run>

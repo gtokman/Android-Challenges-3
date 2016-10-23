@@ -48,7 +48,7 @@ public class PoliticianViewFactory implements RemoteViewsFactory {
 		intent.putExtra(VotingHistoryActivity.EXTRA_POLITICIAN, politician);
 		rv.setOnClickFillInIntent(R.id.root, intent);
 		
-		return null;
+		return rv;
 	}
 
 	@Override
@@ -68,14 +68,6 @@ public class PoliticianViewFactory implements RemoteViewsFactory {
 
 	@Override
 	public void onCreate() {
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-		int filter = prefs.getInt("Filter" + mWidgetId, -1);
-		
-		if(filter == PoliticiansListFragment.FILTER_ALL) {
-			mPoliticians = PoliticiansHelper.getAllPoliticians();
-		} else if(filter == PoliticiansListFragment.FILTER_FAVORITES) {
-			mPoliticians = PoliticiansHelper.getFavoritePoliticians(mContext);
-		}
 	}
 
 	@Override

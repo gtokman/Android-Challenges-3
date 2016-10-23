@@ -23,9 +23,10 @@ public class PoliticianWidget extends AppWidgetProvider {
 			Intent intent = new Intent(context, ListWidgetService.class);
 		    intent.setData(Uri.fromParts("content", String.valueOf(widgetId), null)); // Leave this line alone.
 			intent.putExtra(ListWidgetService.EXTRA_TYPE, ListWidgetService.TYPE_POLITICIAN);
-			
+			intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId);
+
 			RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.list_widget_layout);
-			rv.setRemoteAdapter(R.id.empty, intent);
+			rv.setRemoteAdapter(R.id.list, intent);
 			rv.setEmptyView(R.id.list, R.id.empty);
 			
 			Intent historyInfo = new Intent(context, VotingHistoryActivity.class);
